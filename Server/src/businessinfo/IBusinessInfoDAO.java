@@ -98,6 +98,8 @@ public interface IBusinessInfoDAO {
 
 	public List<BusinessInfo> findByBalance(Object balance);
 
+	public List<BusinessInfo> findByRandcode(Object randcode);
+
 	/**
 	 * Find all BusinessInfo entities.
 	 * 

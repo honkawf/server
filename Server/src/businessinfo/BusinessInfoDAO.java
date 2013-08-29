@@ -23,6 +23,7 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 	public static final String CARDNUM = "cardnum";
 	public static final String BLUETOOTHPWD = "bluetoothpwd";
 	public static final String BALANCE = "balance";
+	public static final String RANDCODE = "randcode";
 
 	private EntityManager getEntityManager() {
 		return EntityManagerHelper.getEntityManager();
@@ -183,6 +184,10 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 
 	public List<BusinessInfo> findByBalance(Object balance) {
 		return findByProperty(BALANCE, balance);
+	}
+
+	public List<BusinessInfo> findByRandcode(Object randcode) {
+		return findByProperty(RANDCODE, randcode);
 	}
 
 	/**

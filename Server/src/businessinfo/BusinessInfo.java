@@ -19,6 +19,7 @@ public class BusinessInfo implements java.io.Serializable {
 	private String cardnum;
 	private String bluetoothpwd;
 	private String balance;
+	private String randcode;
 
 	// Constructors
 
@@ -33,12 +34,13 @@ public class BusinessInfo implements java.io.Serializable {
 
 	/** full constructor */
 	public BusinessInfo(String username, String storename, String cardnum,
-			String bluetoothpwd, String balance) {
+			String bluetoothpwd, String balance, String randcode) {
 		this.username = username;
 		this.storename = storename;
 		this.cardnum = cardnum;
 		this.bluetoothpwd = bluetoothpwd;
 		this.balance = balance;
+		this.randcode = randcode;
 	}
 
 	// Property accessors
@@ -86,6 +88,15 @@ public class BusinessInfo implements java.io.Serializable {
 
 	public void setBalance(String balance) {
 		this.balance = balance;
+	}
+
+	@Column(name = "RANDCODE", length = 11)
+	public String getRandcode() {
+		return this.randcode;
+	}
+
+	public void setRandcode(String randcode) {
+		this.randcode = randcode;
 	}
 
 }

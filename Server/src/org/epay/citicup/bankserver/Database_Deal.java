@@ -143,15 +143,16 @@ public class Database_Deal {
 		PersonInfo person_info=new PersonInfo();
 		for(PersonInfo intor:person_info_list)
 			person_info=intor;
-		query_result=person_info.getBalance();
+
 		
-		if(query_result.isEmpty())
+		if(person_info==null)
 		{
 //			stmt.close(); 
 			return false;
 		}
 		else
 		{
+			query_result=person_info.getBalance();
 			double newbalance=Double.parseDouble(query_result)+Double.parseDouble(amount);
 			query_result=Double.toString(newbalance);
 //			stmt.executeUpdate("update person_info set BALANCE='"+query_result+"' where CARDNUM='"+cardnumber+"'");
@@ -182,15 +183,14 @@ public class Database_Deal {
 		BusinessInfo business_info=new BusinessInfo();
 		for(BusinessInfo intor:business_info_list)
 			business_info=intor;
-		query_result=business_info.getBalance();
-		
-		if(query_result.isEmpty())
+		if(business_info==null)
 		{
 //			stmt.close(); 
 			return false;
 		}
 		else
 		{
+			query_result=business_info.getBalance();
 			double newbalance=Double.parseDouble(query_result)+Double.parseDouble(amount);
 			query_result=Double.toString(newbalance);
 //			stmt.executeUpdate("update business_info set BALANCE='"+query_result+"' where CARDNUM='"+cardnumber+"'");
@@ -255,7 +255,7 @@ public class Database_Deal {
 		
 		IPersonInfoDAO person_info_dao=new PersonInfoDAO();
 		PersonInfo person_info=person_info_dao.findById(userName);
-		if(person_info.getUsername().isEmpty())
+		if(person_info==null)
 			return true;
 		else
 			return false;
@@ -290,7 +290,7 @@ public class Database_Deal {
 		person_info.setBluetoothmac(bluetoothMac);
 		person_info_dao.save(person_info);
 		PersonInfo exam_person_info=person_info_dao.findById(userName);
-		if(exam_person_info.getUsername().isEmpty())
+		if(exam_person_info==null)
 			return false;
 		else
 			return true;
@@ -316,7 +316,7 @@ public class Database_Deal {
 		
 		IPersonInfoDAO person_info_dao=new PersonInfoDAO();	
 		PersonInfo person_info=person_info_dao.findById(userName);
-		if(person_info.getUsername().isEmpty())
+		if(person_info==null)
 			return false;
 		else
 		{
@@ -326,7 +326,7 @@ public class Database_Deal {
 			person_info.setIdentificationcardnum(idCardNum);
 			person_info_dao.save(person_info);
 			PersonInfo exam_person_info=person_info_dao.findById(userName);
-			if(exam_person_info.getUsername().isEmpty())
+			if(exam_person_info==null)
 				return false;
 			else
 				return true;
@@ -356,7 +356,6 @@ public class Database_Deal {
 		
 		IPersonInfoDAO person_info_dao=new PersonInfoDAO();
 		List<PersonInfo> person_info_list=person_info_dao.findByCardnum(cardNumber);
-		PersonInfo person_info=new PersonInfo();
 		for(PersonInfo intor:person_info_list)
 			{
 				if(idCardNumber.equals(intor.getIdentificationcardnum()))
@@ -366,6 +365,38 @@ public class Database_Deal {
 			}
 		return false;
 	}
+	
+	public boolean compareImei(String cardNumber , String imei) throws SQLException, ClassNotFoundException{
+		/*
+				Connection tempcon = Connect_bank_db();
+				Statement stmt = tempcon.createStatement();
+				String query = "select * from person_info where cardNum = '" + c + "' and identificationCardNum = '" + i + "'";
+				ResultSet rs = stmt.executeQuery(query);
+				if(rs.next()){
+					tempcon.commit();
+					tempcon.close();
+					stmt.close();
+					return true;
+				}
+				else{
+					tempcon.commit();
+					tempcon.close();
+					stmt.close();
+					return false;
+				}
+				*/
+				
+				IPersonInfoDAO person_info_dao=new PersonInfoDAO();
+				List<PersonInfo> person_info_list=person_info_dao.findByCardnum(cardNumber);
+				for(PersonInfo intor:person_info_list)
+					{
+						if(imei.equals(intor.getImei()))
+							return true;
+						else
+							return false;
+					}
+				return false;
+			}
 	
 	public boolean Insert_Elenote(String paynum,String payernum,String recernum,String amount) throws SQLException, ClassNotFoundException
 	{
@@ -404,10 +435,34 @@ public class Database_Deal {
 		
 		IElenoteInfoDAO elenote_info_dao=new ElenoteInfoDAO();
 		ElenoteInfo elenote_info=elenote_info_dao.findById(elenote_num);
-		if(elenote_info.getAmount().isEmpty())
+		if(elenote_info==null)
 			return  false;
 		else
 			return true;
+	}
+	
+	public boolean Store_Randcode_Search(String randcode)
+	{
+		IBusinessInfoDAO business_info_dao=new BusinessInfoDAO();
+		List<BusinessInfo> business_info_list=business_info_dao.findByRandcode(randcode);
+		for(BusinessInfo intor:business_info_list)
+		{
+			if(intor==null)
+				return false;
+			else
+				return true;
+		}
+		return false;
+	}
+	
+	public BusinessInfo getBusinessInfo(String cardnumber) throws ClassNotFoundException, SQLException
+	{
+		IBusinessInfoDAO business_info_dao=new BusinessInfoDAO();
+		List<BusinessInfo> business_info_list=business_info_dao.findByCardnum(cardnumber);
+		BusinessInfo business_info=new BusinessInfo();
+		for(BusinessInfo intor:business_info_list)
+			business_info=intor;
+		return business_info;
 	}
 	
 	public PersonInfo getPersonInfo(String cardnumber) throws ClassNotFoundException, SQLException

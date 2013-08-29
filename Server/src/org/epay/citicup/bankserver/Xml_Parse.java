@@ -30,6 +30,8 @@ import org.jdom2.input.StAXStreamBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import businessinfo.BusinessInfo;
+
 import personinfo.PersonInfo;
 
 public class Xml_Parse {
@@ -83,7 +85,6 @@ public class Xml_Parse {
 					registerAccountSuccess(out_result);
 				else
 					registerAccountFailure(out_result);
-				
 			}
 			else if(event.equals("checkAccount"))
 			{
@@ -106,6 +107,13 @@ public class Xml_Parse {
 				else
 					Notepay_Failure(out_result);
 			}
+			else if(event.equals("supermarketlogin"))
+			{
+				if(Store_Randcode())
+					Store_Search_Success(out_result);
+				else
+					Store_Search_Failure(out_result);
+			}
 			else
 			{
 				Xml_Error(out_result);
@@ -117,6 +125,51 @@ public class Xml_Parse {
 		}
 	}
 	
+	private void Store_Search_Failure(OutputStream out_result) throws IOException {
+		// TODO Auto-generated method stub
+		Element price_root = new Element("information");
+		price_root.setAttribute("event", "sentence");
+		price_root.addContent("随机码错误");
+		price_xml.setRootElement(price_root);
+		Xml_Send(out_result,price_xml);
+	}
+
+	private void Store_Search_Success(OutputStream out_result) throws IOException, ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		Database_Deal databaseOP =new Database_Deal();
+		Element root = xml_doc.getRootElement();
+		Element business_info_node=root.getChild("businessinfo");
+		String randcode=business_info_node.getChildText("randcode");
+		BusinessInfo business_info=databaseOP.getBusinessInfo(randcode);
+		Element username=new Element("username");
+		username.setText(business_info.getUsername());
+		Element storename=new Element("storename");
+		storename.setText(business_info.getStorename());
+		Element cardnum=new Element("cardnum");
+		cardnum.setText(business_info.getCardnum());
+		Element bluetoothpwd=new Element("bluetoothpwd");
+		bluetoothpwd.setText(business_info.getBluetoothpwd());
+		Element balance=new Element("balance");
+		balance.setText(business_info.getBalance());
+		business_info_node.addContent(username);
+		business_info_node.addContent(storename);
+		business_info_node.addContent(cardnum);
+		business_info_node.addContent(bluetoothpwd);
+		business_info_node.addContent(balance);
+		Xml_Send(out_result,xml_doc);
+	}
+	
+	private boolean Store_Randcode() {
+		// TODO Auto-generated method stub
+		Database_Deal databaseOP =new Database_Deal();
+		Element root = xml_doc.getRootElement();
+		String randcode=root.getChild("businessinfo").getChildText("randcode");
+		if(databaseOP.Store_Randcode_Search(randcode))
+			return true;
+		else
+			return false;
+	}
+
 	private void Notepay_Failure(OutputStream out_result) throws IOException {
 		// TODO Auto-generated method stub
 		Element price_root = new Element("information");
@@ -148,7 +201,7 @@ public class Xml_Parse {
 		// TODO Auto-generated method stub
 		Element price_root = new Element("information");
 		price_root.setAttribute("event", "sentence");
-		price_root.addContent("密码文件下载失败");
+		price_root.addContent(sentence);
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
 	}
@@ -166,15 +219,18 @@ public class Xml_Parse {
 		password.setText(person.getPassword());
 		Element cardnumber=new Element("cardnumber");
 		cardnumber.setText(person.getCardnum());
-		Element dynamicpasswordnum=new Element("dynamicpasswordnum");
-		dynamicpasswordnum.setText(person.getPrivatekey());
+		Element privatekey=new Element("privatekey");
+		privatekey.setText(person.getPrivatekey());
 		Element balance=new Element("balance");
 		balance.setText(person.getBalance());
+		Element publickeyn=new Element("publickeyn");
+		publickeyn.setText(person.getPublickeyn());
 		root.addContent(usename);
 		root.addContent(password);
 		root.addContent(cardnumber);
-		root.addContent(dynamicpasswordnum);
+		root.addContent(privatekey);
 		root.addContent(balance);
+		root.addContent(publickeyn);
 		price_xml.setRootElement(root);
 		Xml_Send(out_result,price_xml);
 	}
@@ -185,15 +241,27 @@ public class Xml_Parse {
 		Element root = xml_doc.getRootElement();
 		String cardnumber = root.getChildText("cardnumber");
 		String identificationnumber = root.getChildText("identificationnumber");
+		String imei = root.getChildText("imei");
 		Database_Deal databaseOP =new Database_Deal();
 		try {
 			if(databaseOP.resetPassword(cardnumber,identificationnumber))
+			{
+			if(databaseOP.compareImei(cardnumber, imei))
 			{
 				publicvariable=cardnumber;
 				return true;
 			}
 			else
+			{
+				sentence="请重新注册";
 				return false;
+			}
+			}
+			else
+			{
+				sentence="密码文件下载失败";
+				return false;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -487,4 +555,5 @@ public class Xml_Parse {
 	private Document price_xml;
 	private PersonInfo person;
 	private String publicvariable;
+	private String sentence;
 }
