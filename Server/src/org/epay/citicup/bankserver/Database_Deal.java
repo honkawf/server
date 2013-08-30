@@ -231,11 +231,14 @@ public class Database_Deal {
 		List<PersonInfo> person_info_list=person_info_dao.findByCardnum(cardnumber);
 		PersonInfo person_info=new PersonInfo();
 		for(PersonInfo intor:person_info_list)
-			person_info=intor;
-		query_result=person_info.getPublickeyd();
+		{
+			d=new BigInteger(intor.getPublickeyd());
+			n=new BigInteger(intor.getPublickeyn());
+		}
+		/*query_result=person_info.getPublickeyd();
 		d=new BigInteger(query_result);
 		query_result=person_info.getPublickeyn();
-		n=new BigInteger(query_result);
+		n=new BigInteger(query_result);*/
 		
 		Rsa rsa=new Rsa(n,d);
 //			stmt.close(); 
@@ -495,5 +498,32 @@ public class Database_Deal {
 	private String USERNAME;
 	private String PASSWORD;
 */
+
+	public boolean Modify_Phonenumber(String username, String phonenumber) {
+		// TODO Auto-generated method stub
+		IPersonInfoDAO person_info_dao=new PersonInfoDAO();
+		PersonInfo person_info=person_info_dao.findById(username);
+		if(person_info==null)
+			return false;
+		else
+		{
+			person_info.setPhonenum(phonenumber);
+			person_info_dao.update(person_info);
+			return true;
+		}
+	}
 	
+	public boolean Modify_Password(String username, String password) {
+		// TODO Auto-generated method stub
+		IPersonInfoDAO person_info_dao=new PersonInfoDAO();
+		PersonInfo person_info=person_info_dao.findById(username);
+		if(person_info==null)
+			return false;
+		else
+		{
+			person_info.setPassword(password);
+			person_info_dao.update(person_info);
+			return true;
+		}
+	}
 }

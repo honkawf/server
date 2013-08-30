@@ -61,58 +61,72 @@ public class Xml_Parse {
 			{
 				if(Transfer_Account())
 				{
-					Transfer_Success(out_result);
+					Send_Sentence_Xml("付款成功",out_result);
 				}
 				else
 				{
-					Transfer_Failed(out_result);
+					Send_Sentence_Xml("付款失败",out_result);
 				}
 			}
-			else if(event.equals("resetPassword"))
+			else if(event.equals("downloadPassword"))
 			{
-				if(Reset_Password())
+				if(Download_Password())
 				{
-					Reset_Success(out_result);
+					Download_Success(out_result);
 				}
 				else
 				{
-					Reset_Failed(out_result);
+					Send_Sentence_Xml(sentence,out_result);
 				}
 			}
 			else if(event.equals("register"))
 			{
 				if(registerAccount())
-					registerAccountSuccess(out_result);
+					Send_Sentence_Xml("注册成功",out_result);
 				else
-					registerAccountFailure(out_result);
+					Send_Sentence_Xml("注册失败",out_result);
 			}
 			else if(event.equals("checkAccount"))
 			{
 				if(checkAccountCorrect())
-					checkAccountSuccess(out_result);
+					Send_Sentence_Xml("可以使用",out_result);
 				else
-					checkAccountFailure(out_result);
+					Send_Sentence_Xml("不可以使用",out_result);
 			}
 			else if(event.equals("linkBankCard"))
 			{
 				if(linkBankCard())
-					linkBankCardSuccess(out_result);
+					Send_Sentence_Xml("绑定成功",out_result);
 				else
-					linkBankCardFailure(out_result);
+					Send_Sentence_Xml("绑定失败",out_result);
 			}
 			else if(event.equals("transfer"))
 			{
 				if(Ele_Note())
 					Notepay_Success(out_result);
 				else
-					Notepay_Failure(out_result);
+					Send_Sentence_Xml("电子支票兑现失败",out_result);
 			}
 			else if(event.equals("supermarketlogin"))
 			{
 				if(Store_Randcode())
 					Store_Search_Success(out_result);
 				else
-					Store_Search_Failure(out_result);
+					Send_Sentence_Xml("随机码错误",out_result);
+			}
+			else if(event.equals("modifyPassword"))
+			{
+				if(Modify_Password())
+					Send_Sentence_Xml("修改成功",out_result);
+				else
+					Send_Sentence_Xml("修改失败",out_result);
+			}
+			else if(event.equals("modifyPhonenum"))
+			{
+				if(Modify_Phonenumber())
+					Send_Sentence_Xml("修改成功",out_result);
+				else
+					Send_Sentence_Xml("修改失败",out_result);
 			}
 			else
 			{
@@ -124,7 +138,35 @@ public class Xml_Parse {
 			Xml_Error(out_result);
 		}
 	}
+	public void Send_Sentence_Xml(String Sentence,OutputStream out_result) throws IOException
+	{
+		Element price_root = new Element("information");
+		price_root.setAttribute("event", "sentence");
+		price_root.addContent(Sentence);
+		price_xml.setRootElement(price_root);
+		Xml_Send(out_result,price_xml);
+	}
 	
+	private boolean Modify_Phonenumber() {
+		// TODO Auto-generated method stub
+		Database_Deal databaseOP =new Database_Deal();
+		Element root = xml_doc.getRootElement();
+		if(databaseOP.Modify_Phonenumber(root.getChildText("username"),root.getChildText("phonenum")))
+			return true;
+		else
+			return false;
+	}
+
+	private boolean Modify_Password() {
+		// TODO Auto-generated method stub
+		Database_Deal databaseOP =new Database_Deal();
+		Element root = xml_doc.getRootElement();
+		if(databaseOP.Modify_Password(root.getChildText("username"),root.getChildText("password")))
+			return true;
+		else
+			return false;
+	}
+	/*
 	private void Store_Search_Failure(OutputStream out_result) throws IOException {
 		// TODO Auto-generated method stub
 		Element price_root = new Element("information");
@@ -133,7 +175,7 @@ public class Xml_Parse {
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
 	}
-
+*/
 	private void Store_Search_Success(OutputStream out_result) throws IOException, ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
 		Database_Deal databaseOP =new Database_Deal();
@@ -169,7 +211,7 @@ public class Xml_Parse {
 		else
 			return false;
 	}
-
+/*
 	private void Notepay_Failure(OutputStream out_result) throws IOException {
 		// TODO Auto-generated method stub
 		Element price_root = new Element("information");
@@ -177,7 +219,7 @@ public class Xml_Parse {
 		price_root.addContent("电子支票兑现失败");
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
-	}
+	}*/
 
 	private void Notepay_Success(OutputStream out_result) throws IOException, SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
@@ -196,7 +238,7 @@ public class Xml_Parse {
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
 	}
-
+/*
 	private void Reset_Failed(OutputStream out_result) throws IOException {
 		// TODO Auto-generated method stub
 		Element price_root = new Element("information");
@@ -204,9 +246,9 @@ public class Xml_Parse {
 		price_root.addContent(sentence);
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
-	}
+	}*/
 
-	private void Reset_Success(OutputStream out_result) throws IOException, ClassNotFoundException, SQLException {
+	private void Download_Success(OutputStream out_result) throws IOException, ClassNotFoundException, SQLException {
 		// TODO Auto-generated method stub
 		Database_Deal databaseOP =new Database_Deal();
 		person=databaseOP.getPersonInfo(publicvariable);
@@ -235,7 +277,7 @@ public class Xml_Parse {
 		Xml_Send(out_result,price_xml);
 	}
 
-	private boolean Reset_Password() {
+	private boolean Download_Password() {
 		// TODO Auto-generated method stub
 		//解析xml，获得银行卡号，身份证号，若正确，则成功，否则失败
 		Element root = xml_doc.getRootElement();
@@ -436,7 +478,7 @@ public class Xml_Parse {
 			  */
 //		Xml_Send(out_result,xml_doc);
 	}
-	
+	/*
 	public void Transfer_Success(OutputStream out_result) throws IOException
 	{
 		Element price_root = new Element("information");
@@ -445,7 +487,9 @@ public class Xml_Parse {
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
 	}
+	*/
 	
+	/*
 	public void Transfer_Failed(OutputStream out_result) throws IOException
 	{
 		Element price_root = new Element("information");
@@ -453,7 +497,7 @@ public class Xml_Parse {
 		price_root.addContent("付款失败");
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
-	}
+	}*/
 	
 	public boolean checkAccountCorrect() throws JDOMException, FileNotFoundException, IOException, ClassNotFoundException, SQLException{
 		Element root = xml_doc.getRootElement();
@@ -463,26 +507,24 @@ public class Xml_Parse {
 		String userName = gl.getChildText("userName");
 		return datebaseOP.checkAccountCorrect(userName);
 	}
-	
+	/*
 	public void checkAccountSuccess(OutputStream out_result) throws IOException
 	{
 		Element checkAccount_root = new Element("information");
 		checkAccount_root.setAttribute("event", "sentence");
 		checkAccount_root.addContent("可以使用");
-		System.out.println("可以使用");
 		price_xml.setRootElement(checkAccount_root);
 		Xml_Send(out_result,price_xml);
-	}
-	
+	}*/
+	/*
 	public void checkAccountFailure(OutputStream out_result) throws IOException
 	{
 		Element checkAccount_root = new Element("information");
 		checkAccount_root.setAttribute("event", "sentence");
 		checkAccount_root.addContent("不可以使用");
-		System.out.println("不可以使用");
 		price_xml.setRootElement(checkAccount_root);
 		Xml_Send(out_result,price_xml);
-	}
+	}*/
 
 	
 	public boolean registerAccount() throws JDOMException, FileNotFoundException, IOException, ClassNotFoundException, SQLException{
@@ -497,26 +539,24 @@ public class Xml_Parse {
 		System.out.println(userName+password+ customerName+ bluetoothMac);
 		return datebaseOP.registerNewAccount(userName, password, customerName, bluetoothMac);
 	}
-	
+	/*
 	public void registerAccountSuccess(OutputStream out_result) throws IOException
 	{
 		Element registerAccount_root = new Element("information");
 		registerAccount_root.setAttribute("event", "sentence");
 		registerAccount_root.addContent("注册成功");
-		System.out.println("注册成功");
 		price_xml.setRootElement(registerAccount_root);
 		Xml_Send(out_result,price_xml);
-	}
-	
+	}*/
+	/*
 	public void registerAccountFailure(OutputStream out_result) throws IOException
 	{
 		Element registerAccount_root = new Element("information");
 		registerAccount_root.setAttribute("event", "sentence");
 		registerAccount_root.addContent("注册失败");
-		System.out.println("注册失败");
 		price_xml.setRootElement(registerAccount_root);
 		Xml_Send(out_result,price_xml);
-	}
+	}*/
 	
 	public boolean linkBankCard() throws JDOMException, FileNotFoundException, IOException, ClassNotFoundException, SQLException{
 		Element root = xml_doc.getRootElement();
@@ -530,26 +570,24 @@ public class Xml_Parse {
 		System.out.println(userName+cardNum+ phoneNum+ identificationCardNum);
 		return datebaseOP.linkBankCard(userName, cardNum, phoneNum, identificationCardNum);
 	}
-	
+	/*
 	public void linkBankCardSuccess(OutputStream out_result) throws IOException
 	{
 		Element linkBankCard_root = new Element("information");
 		linkBankCard_root.setAttribute("event", "sentence");
 		linkBankCard_root.addContent("绑定成功");
-		System.out.println("绑定成功");
 		price_xml.setRootElement(linkBankCard_root);
 		Xml_Send(out_result,price_xml);
-	}
-	
+	}*/
+	/*
 	public void linkBankCardFailure(OutputStream out_result) throws IOException
 	{
 		Element linkBankCard_root = new Element("information");
 		linkBankCard_root.setAttribute("event", "sentence");
 		linkBankCard_root.addContent("绑定失败");
-		System.out.println("绑定失败");
 		price_xml.setRootElement(linkBankCard_root);
 		Xml_Send(out_result,price_xml);
-	}
+	}*/
 	
 	private Document xml_doc;
 	private Document price_xml;
