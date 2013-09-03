@@ -6,11 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * SupermarketPrice entity. @author MyEclipse Persistence Tools
+ * SupermartketPrice entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "SUPERMARTKET_PRICE", schema = "SYSTEM")
-public class SupermarketPrice implements java.io.Serializable {
+public class SupermartketPrice implements java.io.Serializable {
 
 	// Fields
 
@@ -21,16 +21,16 @@ public class SupermarketPrice implements java.io.Serializable {
 	// Constructors
 
 	/** default constructor */
-	public SupermarketPrice() {
+	public SupermartketPrice() {
 	}
 
 	/** minimal constructor */
-	public SupermarketPrice(String goodsbarcode) {
+	public SupermartketPrice(String goodsbarcode) {
 		this.goodsbarcode = goodsbarcode;
 	}
 
 	/** full constructor */
-	public SupermarketPrice(String goodsbarcode, String goodsname,
+	public SupermartketPrice(String goodsbarcode, String goodsname,
 			String goodsprice) {
 		this.goodsbarcode = goodsbarcode;
 		this.goodsname = goodsname;

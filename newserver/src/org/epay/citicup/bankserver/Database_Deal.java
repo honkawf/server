@@ -8,11 +8,15 @@ import elenoteinfo.ElenoteInfo;
 import elenoteinfo.ElenoteInfoDAO;
 import elenoteinfo.IElenoteInfoDAO;
 
+import persondepositinfo.IPersonDepositInfoDAO;
 import persondepositinfo.PersonDepositInfo;
 import persondepositinfo.PersonDepositInfoDAO;
 import personinfo.IPersonInfoDAO;
 import personinfo.PersonInfo;
 import personinfo.PersonInfoDAO;
+import personinterestinfo.IPersonInterestInfoDAO;
+import personinterestinfo.PersonInterestInfo;
+import personinterestinfo.PersonInterestInfoDAO;
 import xmlsave.IXmlSaveDAO;
 import xmlsave.XmlSave;
 import xmlsave.XmlSaveDAO;
@@ -361,7 +365,7 @@ public class Database_Deal {
 			return false;
 		}
 		*/
-		
+		System.out.println(cardNumber);
 		IPersonInfoDAO person_info_dao=new PersonInfoDAO();
 		List<PersonInfo> person_info_list=person_info_dao.findByCardnum(cardNumber);
 		for(PersonInfo intor:person_info_list)
@@ -536,10 +540,11 @@ public class Database_Deal {
 		// TODO Auto-generated method stub
 		String pointer=null;
 		String newpointer=null;
-		PersonDepositInfoDAO person_deposit_info_dao=new PersonDepositInfoDAO();
-		PersonDepositInfo pointer_deposit=person_deposit_info_dao.findById("Chris");
+		IPersonDepositInfoDAO person_deposit_info_dao=new PersonDepositInfoDAO();
+		PersonDepositInfo pointer_deposit=person_deposit_info_dao.findById("pointer");
 		pointer=pointer_deposit.getId();
 		newpointer=Integer.toString(Integer.parseInt(pointer)+1);	
+		System.out.println(newpointer);
 		PersonDepositInfo maybe_deposit=person_deposit_info_dao.findById(personDepositInfo.getUsername());
 		if(maybe_deposit==null)
 		{
@@ -566,21 +571,33 @@ public class Database_Deal {
 		}
 	}
 
-	public boolean Store_Interest_Financing(PersonDepositInfo personDepositInfo) {
+	public boolean Store_Interest_Financing(PersonInterestInfo personInterestInfo) {
 		// TODO Auto-generated method stub
-		PersonDepositInfoDAO person_deposit_info_dao=new PersonDepositInfoDAO();
-		PersonDepositInfo maybe_deposit=person_deposit_info_dao.findById(personDepositInfo.getUsername());
-		if(maybe_deposit==null)
+		String pointer=null;
+		String newpointer=null;
+		IPersonInterestInfoDAO person_insterest_info_dao=new PersonInterestInfoDAO();
+		PersonInterestInfo pointer_insterest=person_insterest_info_dao.findById("pointer");
+		pointer=pointer_insterest.getId();
+		newpointer=Integer.toString(Integer.parseInt(pointer)+1);	
+		System.out.println(newpointer);
+		PersonInterestInfo maybe_insterest=person_insterest_info_dao.findById(personInterestInfo.getUsername());
+		if(maybe_insterest==null)
 		{
-			return false;
+			personInterestInfo.setId(newpointer);
+			personInterestInfo.setNotes("int"+newpointer);
+			personInterestInfo.setTime(String.valueOf(System.currentTimeMillis()));
+			person_insterest_info_dao.save(personInterestInfo);
+			pointer_insterest.setId(newpointer);
+			person_insterest_info_dao.update(pointer_insterest);
+			return true;
 		}
 		else
 		{
-			if(System.currentTimeMillis()-Long.valueOf(maybe_deposit.getTime())>Long.valueOf("2592000000"))
+			if(System.currentTimeMillis()-Long.valueOf(maybe_insterest.getTime())>Long.valueOf("2592000000"))
 			{
-				maybe_deposit.setInterestrateway(personDepositInfo.getInterestrateway());
-				maybe_deposit.setTime(String.valueOf(System.currentTimeMillis()));
-				person_deposit_info_dao.update(maybe_deposit);
+				maybe_insterest.setFinancingway(personInterestInfo.getFinancingway());
+				maybe_insterest.setTime(String.valueOf(System.currentTimeMillis()));
+				person_insterest_info_dao.update(maybe_insterest);
 				return true;
 			}
 			else

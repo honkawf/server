@@ -4,24 +4,19 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
     http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
     
-	<persistence-unit name="BankPU" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="newserverPU"
+		transaction-type="RESOURCE_LOCAL">
 		<provider>
 			org.eclipse.persistence.jpa.PersistenceProvider
 		</provider>
-		<class>elenoteinfo.ElenoteInfo</class>
 		<class>banktrade.BankTrade</class>
 		<class>businessinfo.BusinessInfo</class>
-		<class>supermarketprice.SupermarketPrice</class>
-		<class>xmlsave.XmlSave</class>
+		<class>elenoteinfo.ElenoteInfo</class>
 		<class>persondepositinfo.PersonDepositInfo</class>
-		<class>personinterestinfo.PersonInfo</class>
-		<class>personinterestinfo.PersonDepositInfo</class>
-		<class>personinterestinfo.PersonInterestInfo</class>
-		<class>persondepositinfo.PersonInfo</class>
-		<class>persondepositinfo.PersonInterestInfo</class>
-		<class>supermarketprice.SupermartketPrice</class>
-		<class>supermarketprice.XmlSave</class>
 		<class>personinfo.PersonInfo</class>
+		<class>personinterestinfo.PersonInterestInfo</class>
+		<class>supermarketprice.SupermartketPrice</class>
+		<class>xmlsave.XmlSave</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver"
 				value="oracle.jdbc.OracleDriver" />

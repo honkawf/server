@@ -9,7 +9,7 @@ import javax.persistence.Table;
  * SupermarketPrice entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "supermarket_price", schema = "SYSTEM")
+@Table(name = "SUPERMARKET_PRICE", schema = "SYSTEM")
 public class SupermarketPrice implements java.io.Serializable {
 
 	// Fields

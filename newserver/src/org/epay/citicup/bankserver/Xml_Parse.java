@@ -34,6 +34,7 @@ import businessinfo.BusinessInfo;
 
 import persondepositinfo.PersonDepositInfo;
 import personinfo.PersonInfo;
+import personinterestinfo.PersonInterestInfo;
 
 public class Xml_Parse {
 	public Xml_Parse(byte [] xml_file) throws JDOMException, IOException, XMLStreamException, TransformerException {
@@ -167,10 +168,10 @@ public class Xml_Parse {
 		// TODO Auto-generated method stub
 		Database_Deal databaseOP =new Database_Deal();
 		Element root = xml_doc.getRootElement();
-		PersonDepositInfo person_deposit_info=new PersonDepositInfo();
-		person_deposit_info.setUsername(root.getChildText("username"));
-		person_deposit_info.setInterestrateway(root.getChildText("depositway"));
-		if(databaseOP.Store_Interest_Financing(person_deposit_info))
+		PersonInterestInfo person_interest_info=new PersonInterestInfo();
+		person_interest_info.setUsername(root.getChildText("username"));
+		person_interest_info.setFinancingway(root.getChildText("financingway"));
+		if(databaseOP.Store_Interest_Financing(person_interest_info))
 			return true;
 		else
 			return false;
@@ -183,6 +184,7 @@ public class Xml_Parse {
 		PersonDepositInfo person_deposit_info=new PersonDepositInfo();
 		person_deposit_info.setUsername(root.getChildText("username"));
 		person_deposit_info.setDepositway(root.getChildText("depositway"));
+		person_deposit_info.setInterestrateway(root.getChildText("interestrateway"));
 		person_deposit_info.setAmount(root.getChildText("amount"));
 		if(databaseOP.Store_Deposit_Financing(person_deposit_info))
 			return true;

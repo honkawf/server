@@ -1,4 +1,4 @@
-package xmlsave;
+package supermarketprice;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +14,8 @@ public class XmlSave implements java.io.Serializable {
 
 	// Fields
 
-	private String num;
 	private String notes;
+	private String num;
 	private String xmldoc;
 
 	// Constructors
@@ -25,35 +25,35 @@ public class XmlSave implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public XmlSave(String num) {
-		this.num = num;
+	public XmlSave(String notes) {
+		this.notes = notes;
 	}
 
 	/** full constructor */
-	public XmlSave(String num, String notes, String xmldoc) {
-		this.num = num;
+	public XmlSave(String notes, String num, String xmldoc) {
 		this.notes = notes;
+		this.num = num;
 		this.xmldoc = xmldoc;
 	}
 
 	// Property accessors
 	@Id
-	@Column(name = "num", unique = true, nullable = false, length = 10)
-	public String getNum() {
-		return this.num;
-	}
-
-	public void setNum(String num) {
-		this.num = num;
-	}
-
-	@Column(name = "notes", length = 10)
+	@Column(name = "notes", unique = true, nullable = false, length = 16)
 	public String getNotes() {
 		return this.notes;
 	}
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	@Column(name = "num", length = 10)
+	public String getNum() {
+		return this.num;
+	}
+
+	public void setNum(String num) {
+		this.num = num;
 	}
 
 	@Column(name = "xmldoc")
