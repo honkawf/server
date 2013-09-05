@@ -1,9 +1,12 @@
 package banktrade;
 
+import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import cn.edu.seu.interfaces.IBankTradeDAO;
 
 /**
  * A data access object (DAO) providing persistence and search support for
@@ -12,7 +15,7 @@ import javax.persistence.Query;
  * manually added to each of these methods for data to be persisted to the JPA
  * datastore.
  * 
- * @see banktrade.BankTrade
+ * @see temp.BankTrade
  * @author MyEclipse Persistence Tools
  */
 
@@ -136,7 +139,7 @@ public class BankTradeDAO implements IBankTradeDAO {
 		}
 	}
 
-	public BankTrade findById(Long id) {
+	public BankTrade findById(String id) {
 		EntityManagerHelper.log("finding BankTrade instance with id: " + id,
 				Level.INFO, null);
 		try {

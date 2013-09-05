@@ -1,7 +1,13 @@
-package org.epay.citicup.bankserver;
+package cn.edu.seu.bankserver;
 
 import java.math.*;
+import java.sql.SQLException;
 import java.util.*;
+
+import cn.edu.seu.interfaces.IRsaDbDAO;
+import cn.edu.seu.rsadb.RsaDb;
+import cn.edu.seu.rsadb.RsaDbDAO;
+
 public class Rsa{
  /**
   * @param args
@@ -14,11 +20,54 @@ public class Rsa{
 		 d=new BigInteger("435982084263274353850676993687");
 	}
 	
-	Rsa(BigInteger o_n,BigInteger o_d)
+	Rsa(BigInteger o_e,BigInteger o_d)
 	{
-		 n=o_n;
-		 e=new BigInteger("0");
+		 n=new BigInteger("552242638982356744711324281679");
+		 e=o_e;
 		 d=o_d;
+	}
+	
+	Rsa(String message)
+	{
+		n=new BigInteger("552242638982356744711324281679");
+		if(message.equals("create"))
+		{
+			String exist="";
+			int counter=1;
+			do{
+				IRsaDbDAO rsa_db_dao=new RsaDbDAO();
+				RsaDb rsadb=rsa_db_dao.findById(String.valueOf(counter));
+				e=new BigInteger(rsadb.getKeye());
+				d=new BigInteger(rsadb.getKeyd());
+				exist=rsadb.getTheidu();
+				counter++;
+				if(exist.equals("nu"))
+				{
+					rsadb.setTheidu("u");
+					rsa_db_dao.update(rsadb);
+				}
+			}while(exist.equals("u"));
+		}
+		else
+		{
+			e=BigInteger.ZERO;
+			d=BigInteger.ZERO;
+		}
+	}
+	
+	public String getN()
+	{
+		return n.toString();
+	}
+	
+	public String getE()
+	{
+		return e.toString();
+	}
+	
+	public String getD()
+	{
+		return d.toString();
 	}
 	
  public String Setrsa(String code) {

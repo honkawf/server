@@ -1,16 +1,19 @@
-package businessinfo;
+package cn.edu.seu.interfaces;
 
 import java.util.List;
 
+import cn.edu.seu.elenoteinfo.ElenoteInfo;
+
+
 /**
- * Interface for BusinessInfoDAO.
+ * Interface for ElenoteInfoDAO.
  * 
  * @author MyEclipse Persistence Tools
  */
 
-public interface IBusinessInfoDAO {
+public interface IElenoteInfoDAO {
 	/**
-	 * Perform an initial save of a previously unsaved BusinessInfo entity. All
+	 * Perform an initial save of a previously unsaved ElenoteInfo entity. All
 	 * subsequent persist actions of this entity should use the #update()
 	 * method. This operation must be performed within the a database
 	 * transaction context for the entity's data to be permanently saved to the
@@ -20,19 +23,19 @@ public interface IBusinessInfoDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * IBusinessInfoDAO.save(entity);
+	 * IElenoteInfoDAO.save(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            BusinessInfo entity to persist
+	 *            ElenoteInfo entity to persist
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void save(BusinessInfo entity);
+	public void save(ElenoteInfo entity);
 
 	/**
-	 * Delete a persistent BusinessInfo entity. This operation must be performed
+	 * Delete a persistent ElenoteInfo entity. This operation must be performed
 	 * within the a database transaction context for the entity's data to be
 	 * permanently deleted from the persistence store, i.e., database. This
 	 * method uses the {@link javax.persistence.EntityManager#remove(Object)
@@ -40,21 +43,21 @@ public interface IBusinessInfoDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * IBusinessInfoDAO.delete(entity);
+	 * IElenoteInfoDAO.delete(entity);
 	 * EntityManagerHelper.commit();
 	 * entity = null;
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            BusinessInfo entity to delete
+	 *            ElenoteInfo entity to delete
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void delete(BusinessInfo entity);
+	public void delete(ElenoteInfo entity);
 
 	/**
-	 * Persist a previously saved BusinessInfo entity and return it or a copy of
-	 * it to the sender. A copy of the BusinessInfo entity parameter is returned
+	 * Persist a previously saved ElenoteInfo entity and return it or a copy of
+	 * it to the sender. A copy of the ElenoteInfo entity parameter is returned
 	 * when the JPA persistence mechanism has not previously been tracking the
 	 * updated entity. This operation must be performed within the a database
 	 * transaction context for the entity's data to be permanently saved to the
@@ -64,46 +67,52 @@ public interface IBusinessInfoDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * entity = IBusinessInfoDAO.update(entity);
+	 * entity = IElenoteInfoDAO.update(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            BusinessInfo entity to update
-	 * @return BusinessInfo the persisted BusinessInfo entity instance, may not
-	 *         be the same
+	 *            ElenoteInfo entity to update
+	 * @return ElenoteInfo the persisted ElenoteInfo entity instance, may not be
+	 *         the same
 	 * @throws RuntimeException
 	 *             if the operation fails
 	 */
-	public BusinessInfo update(BusinessInfo entity);
+	public ElenoteInfo update(ElenoteInfo entity);
 
-	public BusinessInfo findById(String id);
+	public ElenoteInfo findById(String id);
 
 	/**
-	 * Find all BusinessInfo entities with a specific property value.
+	 * Find all ElenoteInfo entities with a specific property value.
 	 * 
 	 * @param propertyName
-	 *            the name of the BusinessInfo property to query
+	 *            the name of the ElenoteInfo property to query
 	 * @param value
 	 *            the property value to match
-	 * @return List<BusinessInfo> found by query
+	 * @return List<ElenoteInfo> found by query
 	 */
-	public List<BusinessInfo> findByProperty(String propertyName, Object value);
+	public List<ElenoteInfo> findByProperty(String propertyName, Object value);
 
-	public List<BusinessInfo> findByStorename(Object storename);
+	public List<ElenoteInfo> findByPayernum(Object payernum);
 
-	public List<BusinessInfo> findByCardnum(Object cardnum);
+	public List<ElenoteInfo> findByRecernum(Object recernum);
 
-	public List<BusinessInfo> findByBluetoothpwd(Object bluetoothpwd);
+	public List<ElenoteInfo> findByAmount(Object amount);
 
-	public List<BusinessInfo> findByBalance(Object balance);
+	public List<ElenoteInfo> findByPayerdevice(Object payerdevice);
 
-	public List<BusinessInfo> findByRandcode(Object randcode);
+	public List<ElenoteInfo> findByRecerdevice(Object recerdevice);
+
+	public List<ElenoteInfo> findByPayername(Object payername);
+
+	public List<ElenoteInfo> findByRecername(Object recername);
+
+	public List<ElenoteInfo> findByTransfertime(Object transfertime);
 
 	/**
-	 * Find all BusinessInfo entities.
+	 * Find all ElenoteInfo entities.
 	 * 
-	 * @return List<BusinessInfo> all BusinessInfo entities
+	 * @return List<ElenoteInfo> all ElenoteInfo entities
 	 */
-	public List<BusinessInfo> findAll();
+	public List<ElenoteInfo> findAll();
 }

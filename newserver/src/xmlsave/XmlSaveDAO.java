@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import cn.edu.seu.interfaces.IXmlSaveDAO;
+
 /**
  * A data access object (DAO) providing persistence and search support for
  * XmlSave entities. Transaction control of the save(), update() and delete()

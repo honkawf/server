@@ -1,4 +1,4 @@
-package supermarketprice;
+package bankaccountinfo;
 
 import banktrade.EntityManagerHelper;
 import java.util.List;
@@ -6,30 +6,31 @@ import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import cn.edu.seu.interfaces.ISupermartketPriceDAO;
+import cn.edu.seu.interfaces.IBankAccountInfoDAO;
 
 /**
  * A data access object (DAO) providing persistence and search support for
- * SupermartketPrice entities. Transaction control of the save(), update() and
+ * BankAccountInfo entities. Transaction control of the save(), update() and
  * delete() operations must be handled externally by senders of these methods or
  * must be manually added to each of these methods for data to be persisted to
  * the JPA datastore.
  * 
- * @see supermarketprice.SupermartketPrice
+ * @see bankaccountinfo.BankAccountInfo
  * @author MyEclipse Persistence Tools
  */
 
-public class SupermartketPriceDAO implements ISupermartketPriceDAO {
+public class BankAccountInfoDAO implements IBankAccountInfoDAO {
 	// property constants
-	public static final String GOODSNAME = "goodsname";
-	public static final String GOODSPRICE = "goodsprice";
+	public static final String NAME = "name";
+	public static final String IDENTIFICATIONCARDNUMBER = "identificationcardnumber";
+	public static final String PASSWORD = "password";
 
 	private EntityManager getEntityManager() {
 		return EntityManagerHelper.getEntityManager();
 	}
 
 	/**
-	 * Perform an initial save of a previously unsaved SupermartketPrice entity.
+	 * Perform an initial save of a previously unsaved BankAccountInfo entity.
 	 * All subsequent persist actions of this entity should use the #update()
 	 * method. This operation must be performed within the a database
 	 * transaction context for the entity's data to be permanently saved to the
@@ -39,22 +40,20 @@ public class SupermartketPriceDAO implements ISupermartketPriceDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * SupermartketPriceDAO.save(entity);
+	 * BankAccountInfoDAO.save(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            SupermartketPrice entity to persist
+	 *            BankAccountInfo entity to persist
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void save(SupermartketPrice entity) {
-		EntityManagerHelper.log("saving SupermartketPrice instance",
-				Level.INFO, null);
+	public void save(BankAccountInfo entity) {
+		EntityManagerHelper.log("saving BankAccountInfo instance", Level.INFO,
+				null);
 		try {
-			getEntityManager().getTransaction().begin();
 			getEntityManager().persist(entity);
-			getEntityManager().getTransaction().commit();
 			EntityManagerHelper.log("save successful", Level.INFO, null);
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("save failed", Level.SEVERE, re);
@@ -63,7 +62,7 @@ public class SupermartketPriceDAO implements ISupermartketPriceDAO {
 	}
 
 	/**
-	 * Delete a persistent SupermartketPrice entity. This operation must be
+	 * Delete a persistent BankAccountInfo entity. This operation must be
 	 * performed within the a database transaction context for the entity's data
 	 * to be permanently deleted from the persistence store, i.e., database.
 	 * This method uses the
@@ -72,25 +71,23 @@ public class SupermartketPriceDAO implements ISupermartketPriceDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * SupermartketPriceDAO.delete(entity);
+	 * BankAccountInfoDAO.delete(entity);
 	 * EntityManagerHelper.commit();
 	 * entity = null;
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            SupermartketPrice entity to delete
+	 *            BankAccountInfo entity to delete
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void delete(SupermartketPrice entity) {
-		EntityManagerHelper.log("deleting SupermartketPrice instance",
+	public void delete(BankAccountInfo entity) {
+		EntityManagerHelper.log("deleting BankAccountInfo instance",
 				Level.INFO, null);
 		try {
-			entity = getEntityManager().getReference(SupermartketPrice.class,
-					entity.getGoodsbarcode());
-			getEntityManager().getTransaction().begin();
+			entity = getEntityManager().getReference(BankAccountInfo.class,
+					entity.getCardnumber());
 			getEntityManager().remove(entity);
-			getEntityManager().getTransaction().commit();
 			EntityManagerHelper.log("delete successful", Level.INFO, null);
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("delete failed", Level.SEVERE, re);
@@ -99,35 +96,33 @@ public class SupermartketPriceDAO implements ISupermartketPriceDAO {
 	}
 
 	/**
-	 * Persist a previously saved SupermartketPrice entity and return it or a
-	 * copy of it to the sender. A copy of the SupermartketPrice entity
-	 * parameter is returned when the JPA persistence mechanism has not
-	 * previously been tracking the updated entity. This operation must be
-	 * performed within the a database transaction context for the entity's data
-	 * to be permanently saved to the persistence store, i.e., database. This
-	 * method uses the {@link javax.persistence.EntityManager#merge(Object)
-	 * EntityManager#merge} operation.
+	 * Persist a previously saved BankAccountInfo entity and return it or a copy
+	 * of it to the sender. A copy of the BankAccountInfo entity parameter is
+	 * returned when the JPA persistence mechanism has not previously been
+	 * tracking the updated entity. This operation must be performed within the
+	 * a database transaction context for the entity's data to be permanently
+	 * saved to the persistence store, i.e., database. This method uses the
+	 * {@link javax.persistence.EntityManager#merge(Object) EntityManager#merge}
+	 * operation.
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * entity = SupermartketPriceDAO.update(entity);
+	 * entity = BankAccountInfoDAO.update(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            SupermartketPrice entity to update
-	 * @return SupermartketPrice the persisted SupermartketPrice entity
-	 *         instance, may not be the same
+	 *            BankAccountInfo entity to update
+	 * @return BankAccountInfo the persisted BankAccountInfo entity instance,
+	 *         may not be the same
 	 * @throws RuntimeException
 	 *             if the operation fails
 	 */
-	public SupermartketPrice update(SupermartketPrice entity) {
-		EntityManagerHelper.log("updating SupermartketPrice instance",
+	public BankAccountInfo update(BankAccountInfo entity) {
+		EntityManagerHelper.log("updating BankAccountInfo instance",
 				Level.INFO, null);
 		try {
-			getEntityManager().getTransaction().begin();
-			SupermartketPrice result = getEntityManager().merge(entity);
-			getEntityManager().getTransaction().commit();
+			BankAccountInfo result = getEntityManager().merge(entity);
 			EntityManagerHelper.log("update successful", Level.INFO, null);
 			return result;
 		} catch (RuntimeException re) {
@@ -136,12 +131,12 @@ public class SupermartketPriceDAO implements ISupermartketPriceDAO {
 		}
 	}
 
-	public SupermartketPrice findById(String id) {
-		EntityManagerHelper.log("finding SupermartketPrice instance with id: "
+	public BankAccountInfo findById(String id) {
+		EntityManagerHelper.log("finding BankAccountInfo instance with id: "
 				+ id, Level.INFO, null);
 		try {
-			SupermartketPrice instance = getEntityManager().find(
-					SupermartketPrice.class, id);
+			BankAccountInfo instance = getEntityManager().find(
+					BankAccountInfo.class, id);
 			return instance;
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("find failed", Level.SEVERE, re);
@@ -150,22 +145,22 @@ public class SupermartketPriceDAO implements ISupermartketPriceDAO {
 	}
 
 	/**
-	 * Find all SupermartketPrice entities with a specific property value.
+	 * Find all BankAccountInfo entities with a specific property value.
 	 * 
 	 * @param propertyName
-	 *            the name of the SupermartketPrice property to query
+	 *            the name of the BankAccountInfo property to query
 	 * @param value
 	 *            the property value to match
-	 * @return List<SupermartketPrice> found by query
+	 * @return List<BankAccountInfo> found by query
 	 */
 	@SuppressWarnings("unchecked")
-	public List<SupermartketPrice> findByProperty(String propertyName,
+	public List<BankAccountInfo> findByProperty(String propertyName,
 			final Object value) {
 		EntityManagerHelper.log(
-				"finding SupermartketPrice instance with property: "
+				"finding BankAccountInfo instance with property: "
 						+ propertyName + ", value: " + value, Level.INFO, null);
 		try {
-			final String queryString = "select model from SupermartketPrice model where model."
+			final String queryString = "select model from BankAccountInfo model where model."
 					+ propertyName + "= :propertyValue";
 			Query query = getEntityManager().createQuery(queryString);
 			query.setParameter("propertyValue", value);
@@ -177,25 +172,31 @@ public class SupermartketPriceDAO implements ISupermartketPriceDAO {
 		}
 	}
 
-	public List<SupermartketPrice> findByGoodsname(Object goodsname) {
-		return findByProperty(GOODSNAME, goodsname);
+	public List<BankAccountInfo> findByName(Object name) {
+		return findByProperty(NAME, name);
 	}
 
-	public List<SupermartketPrice> findByGoodsprice(Object goodsprice) {
-		return findByProperty(GOODSPRICE, goodsprice);
+	public List<BankAccountInfo> findByIdentificationcardnumber(
+			Object identificationcardnumber) {
+		return findByProperty(IDENTIFICATIONCARDNUMBER,
+				identificationcardnumber);
+	}
+
+	public List<BankAccountInfo> findByPassword(Object password) {
+		return findByProperty(PASSWORD, password);
 	}
 
 	/**
-	 * Find all SupermartketPrice entities.
+	 * Find all BankAccountInfo entities.
 	 * 
-	 * @return List<SupermartketPrice> all SupermartketPrice entities
+	 * @return List<BankAccountInfo> all BankAccountInfo entities
 	 */
 	@SuppressWarnings("unchecked")
-	public List<SupermartketPrice> findAll() {
-		EntityManagerHelper.log("finding all SupermartketPrice instances",
+	public List<BankAccountInfo> findAll() {
+		EntityManagerHelper.log("finding all BankAccountInfo instances",
 				Level.INFO, null);
 		try {
-			final String queryString = "select model from SupermartketPrice model";
+			final String queryString = "select model from BankAccountInfo model";
 			Query query = getEntityManager().createQuery(queryString);
 			return query.getResultList();
 		} catch (RuntimeException re) {

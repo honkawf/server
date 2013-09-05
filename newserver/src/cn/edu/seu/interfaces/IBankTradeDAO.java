@@ -1,6 +1,9 @@
-package banktrade;
+package cn.edu.seu.interfaces;
 
 import java.util.List;
+
+import banktrade.BankTrade;
+
 
 /**
  * Interface for BankTradeDAO.
@@ -77,7 +80,7 @@ public interface IBankTradeDAO {
 	 */
 	public BankTrade update(BankTrade entity);
 
-	public BankTrade findById(Long id);
+	public BankTrade findById(String id);
 
 	/**
 	 * Find all BankTrade entities with a specific property value.

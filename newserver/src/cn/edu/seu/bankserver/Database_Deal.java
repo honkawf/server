@@ -1,31 +1,36 @@
-package org.epay.citicup.bankserver;
+package cn.edu.seu.bankserver;
 
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.List;
 
-import elenoteinfo.ElenoteInfo;
-import elenoteinfo.ElenoteInfoDAO;
-import elenoteinfo.IElenoteInfoDAO;
+import cn.edu.seu.elenoteinfo.ElenoteInfo;
+import cn.edu.seu.elenoteinfo.ElenoteInfoDAO;
+import cn.edu.seu.interfaces.IBankAccountInfoDAO;
+import cn.edu.seu.interfaces.IBankTradeDAO;
+import cn.edu.seu.interfaces.IBusinessInfoDAO;
+import cn.edu.seu.interfaces.IElenoteInfoDAO;
+import cn.edu.seu.interfaces.IPersonDepositInfoDAO;
+import cn.edu.seu.interfaces.IPersonInfoDAO;
+import cn.edu.seu.interfaces.IPersonInterestInfoDAO;
+import cn.edu.seu.interfaces.IXmlSaveDAO;
 
-import persondepositinfo.IPersonDepositInfoDAO;
+
 import persondepositinfo.PersonDepositInfo;
 import persondepositinfo.PersonDepositInfoDAO;
-import personinfo.IPersonInfoDAO;
 import personinfo.PersonInfo;
 import personinfo.PersonInfoDAO;
-import personinterestinfo.IPersonInterestInfoDAO;
 import personinterestinfo.PersonInterestInfo;
 import personinterestinfo.PersonInterestInfoDAO;
-import xmlsave.IXmlSaveDAO;
 import xmlsave.XmlSave;
 import xmlsave.XmlSaveDAO;
 
+import bankaccountinfo.BankAccountInfo;
+import bankaccountinfo.BankAccountInfoDAO;
+import banktrade.BankTrade;
 import banktrade.BankTradeDAO;
-import banktrade.IBankTradeDAO;
 import businessinfo.BusinessInfo;
 import businessinfo.BusinessInfoDAO;
-import businessinfo.IBusinessInfoDAO;
 
 
 
@@ -308,7 +313,7 @@ public class Database_Deal {
 			return true;
 	}
 	
-	public boolean linkBankCard(String userName, String cardNum, String phoneNum, String idCardNum) throws ClassNotFoundException, SQLException{
+	public boolean linkBankCard(String userName, String cardNum, String phoneNum, String idCardNum, String cardPassword, Rsa newrsa) throws ClassNotFoundException, SQLException{
 /*		Connection tempcon = Connect_bank_db();
 		Statement stmt = tempcon.createStatement();
 		stmt.executeUpdate("update person_info set cardNum = '" + cardNum +"', phoneNum = '" + phoneNum + "', identificationCardNum = '" + idCardNum + "'"
@@ -328,20 +333,30 @@ public class Database_Deal {
 		
 		IPersonInfoDAO person_info_dao=new PersonInfoDAO();	
 		PersonInfo person_info=person_info_dao.findById(userName);
-		if(person_info==null)
+		IBankAccountInfoDAO bank_account_info_dao=new BankAccountInfoDAO();
+		BankAccountInfo bank_account_info=bank_account_info_dao.findById(cardNum);
+		if((person_info==null)||(bank_account_info==null))
 			return false;
 		else
 		{
+			if((bank_account_info.getIdentificationcardnumber().equals(idCardNum))&&(bank_account_info.getName().equals(userName))&&(bank_account_info.getPassword().equals(cardPassword)))
+			{
 			person_info.setUsername(userName);
 			person_info.setCardnum(cardNum);
 			person_info.setPhonenum(phoneNum);
 			person_info.setIdentificationcardnum(idCardNum);
+			person_info.setPrivatekey(newrsa.getE());
+			person_info.setPublickeyd(newrsa.getD());
+			person_info.setPublickeyn(newrsa.getN());
 			person_info_dao.save(person_info);
 			PersonInfo exam_person_info=person_info_dao.findById(userName);
 			if(exam_person_info==null)
 				return false;
 			else
 				return true;
+			}
+			else
+				return false;
 		}
 	}
 	
@@ -410,7 +425,7 @@ public class Database_Deal {
 				return false;
 			}
 	
-	public boolean Insert_Elenote(String paynum,String payernum,String recernum,String amount) throws SQLException, ClassNotFoundException
+	public boolean Insert_Elenote(String paynum,String payernum,String recernum,String amount, String transfertime, String payername, String recername, String payerdevice, String recerdevice) throws SQLException, ClassNotFoundException
 	{
 		/*
 		Connection tempcon = Connect_bank_db();
@@ -428,6 +443,11 @@ public class Database_Deal {
 		elenote_info.setPayernum(payernum);
 		elenote_info.setRecernum(recernum);
 		elenote_info.setAmount(amount);
+		elenote_info.setTransfertime(transfertime);
+		elenote_info.setPayername(payername);
+		elenote_info.setRecername(recername);
+		elenote_info.setPayerdevice(payerdevice);
+		elenote_info.setRecerdevice(recerdevice);
 		elenote_info_dao.save(elenote_info);
 		return true;
 	}
@@ -604,4 +624,32 @@ public class Database_Deal {
 				return false;
 		}
 	}
+	
+	public String Query_Balance(String name)
+	{
+		IPersonInfoDAO person_info_dao=new PersonInfoDAO();
+		PersonInfo person_info=person_info_dao.findById(name);
+		if(person_info!=null)
+			return person_info.getBalance();
+		else
+			return "Balance query error.";
+	}
+
+	public void Insert_TradeNote(String hash, String amount,
+			String transfertime, String payername, String recername,
+			String payerdevice, String recerdevice, String buyerimei) {
+		// TODO Auto-generated method stub
+		IBankTradeDAO bank_trade_dao=new BankTradeDAO();
+		BankTrade bank_trade=new BankTrade();
+		bank_trade.setTradenum(hash);
+		bank_trade.setAmount(amount);
+		bank_trade.setTradetime(transfertime);
+		bank_trade.setBuyername(payername);
+		bank_trade.setSalername(recername);
+		bank_trade.setBuyermac(payerdevice);
+		bank_trade.setSalermac(recerdevice);
+		bank_trade.setBuyerimei(buyerimei);
+		bank_trade_dao.save(bank_trade);
+	}
 }
+

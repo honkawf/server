@@ -6,6 +6,8 @@ import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import cn.edu.seu.interfaces.IPersonDepositInfoDAO;
+
 /**
  * A data access object (DAO) providing persistence and search support for
  * PersonDepositInfo entities. Transaction control of the save(), update() and

@@ -1,6 +1,8 @@
-package xmlsave;
+package cn.edu.seu.interfaces;
 
 import java.util.List;
+
+import xmlsave.XmlSave;
 
 /**
  * Interface for XmlSaveDAO.

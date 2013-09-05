@@ -11,12 +11,14 @@
 		</provider>
 		<class>banktrade.BankTrade</class>
 		<class>businessinfo.BusinessInfo</class>
-		<class>elenoteinfo.ElenoteInfo</class>
+		<class>cn.edu.seu.elenoteinfo.ElenoteInfo</class>
 		<class>persondepositinfo.PersonDepositInfo</class>
 		<class>personinfo.PersonInfo</class>
 		<class>personinterestinfo.PersonInterestInfo</class>
 		<class>supermarketprice.SupermartketPrice</class>
 		<class>xmlsave.XmlSave</class>
+		<class>cn.edu.seu.rsadb.RsaDb</class>
+		<class>bankaccountinfo.BankAccountInfo</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver"
 				value="oracle.jdbc.OracleDriver" />

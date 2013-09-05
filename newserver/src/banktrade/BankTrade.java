@@ -14,7 +14,7 @@ public class BankTrade implements java.io.Serializable {
 
 	// Fields
 
-	private Long tradenum;
+	private String tradenum;
 	private String salername;
 	private String salermac;
 	private String buyername;
@@ -30,12 +30,12 @@ public class BankTrade implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public BankTrade(Long tradenum) {
+	public BankTrade(String tradenum) {
 		this.tradenum = tradenum;
 	}
 
 	/** full constructor */
-	public BankTrade(Long tradenum, String salername, String salermac,
+	public BankTrade(String tradenum, String salername, String salermac,
 			String buyername, String buyermac, String buyerimei, String amount,
 			String tradetime) {
 		this.tradenum = tradenum;
@@ -50,12 +50,12 @@ public class BankTrade implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@Column(name = "TRADENUM", unique = true, nullable = false, precision = 11, scale = 0)
-	public Long getTradenum() {
+	@Column(name = "TRADENUM", unique = true, nullable = false, length = 31)
+	public String getTradenum() {
 		return this.tradenum;
 	}
 
-	public void setTradenum(Long tradenum) {
+	public void setTradenum(String tradenum) {
 		this.tradenum = tradenum;
 	}
 

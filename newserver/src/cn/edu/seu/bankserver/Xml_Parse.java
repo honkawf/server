@@ -1,19 +1,11 @@
-package org.epay.citicup.bankserver;
+package cn.edu.seu.bankserver;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.sql.*;
 
 import javax.xml.stream.*;
 import javax.xml.transform.Transformer;
@@ -25,8 +17,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.jdom2.*;
 import org.jdom2.input.DOMBuilder;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.input.StAXStreamBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
@@ -63,7 +53,15 @@ public class Xml_Parse {
 			{
 				if(Transfer_Account())
 				{
-					Send_Sentence_Xml("付款成功",out_result);
+					Database_Deal databaseOP=new Database_Deal();
+					Element gl=root.getChild("trade");
+					String payername=gl.getChildText("payername");
+					Element strange_balance_root = new Element("information");
+					strange_balance_root.setAttribute("event", "strangebalance");
+					String strangebalance=databaseOP.Query_Balance(payername);
+					strange_balance_root.addContent(strangebalance);
+					price_xml.setRootElement(strange_balance_root);
+					Xml_Send(out_result,price_xml);
 				}
 				else
 				{
@@ -98,7 +96,7 @@ public class Xml_Parse {
 			else if(event.equals("linkBankCard"))
 			{
 				if(linkBankCard())
-					Send_Sentence_Xml("绑定成功",out_result);
+					lindBankCardSuccess(out_result);
 				else
 					Send_Sentence_Xml("绑定失败",out_result);
 			}
@@ -108,6 +106,13 @@ public class Xml_Parse {
 					Notepay_Success(out_result);
 				else
 					Send_Sentence_Xml("电子支票兑现失败",out_result);
+			}
+			else if(event.equals("individualTrade"))
+			{
+				if(Ele_Trade())
+					Tradepay_Success(out_result);
+				else
+					Send_Sentence_Xml("个体商户结算失败",out_result);
 			}
 			else if(event.equals("supermarketlogin"))
 			{
@@ -160,6 +165,20 @@ public class Xml_Parse {
 		Element price_root = new Element("information");
 		price_root.setAttribute("event", "sentence");
 		price_root.addContent(Sentence);
+		price_xml.setRootElement(price_root);
+		Xml_Send(out_result,price_xml);
+	}
+	
+	private void lindBankCardSuccess(OutputStream out_result) throws IOException {
+		// TODO Auto-generated method stub
+		Element price_root = new Element("information");
+		Element e=new Element("privstekey");
+		e.setText(newrsa.getE());
+		Element n=new Element("publickeyn");
+		n.setText(newrsa.getN());
+		price_root.setAttribute("event", "linkbankcardsuccess");
+		price_root.addContent(e);
+		price_root.addContent(n);
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
 	}
@@ -265,22 +284,109 @@ public class Xml_Parse {
 		price_xml.setRootElement(price_root);
 		Xml_Send(out_result,price_xml);
 	}*/
+	
+	private void Tradepay_Success(OutputStream out_result) throws SQLException, ClassNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		Database_Deal databaseOP =new Database_Deal();
+		Element root = xml_doc.getRootElement();
+		Element gl=root.getChild("trade");
+//		List<Element> list = gl.getChildren();
+		String hash=gl.getChildText("cipher");
+//		String payer_cardnum=gl.getChildText("payercardnumber");
+		String amount=gl.getChildText("totalprice");
+//		String recer_cardnum=gl.getChildText("receivercardnumber");
+		String transfertime=gl.getChildText("transfertime");
+		String payername=gl.getChildText("payername");
+		String recername=gl.getChildText("receivername");
+		String payerdevice=gl.getChildText("payerdevice");
+		String recerdevice=gl.getChildText("receiverdevice");
+		String buyerimei=gl.getChildText("payerimei");
+		databaseOP.Insert_TradeNote(hash, amount,transfertime,payername,recername,payerdevice,recerdevice,buyerimei);
+		Element local_balance_root = new Element("information");
+		local_balance_root.setAttribute("event", "localbalance");
+		String localbalance=databaseOP.Query_Balance(recername);
+		local_balance_root.addContent(localbalance);
+		price_xml.setRootElement(local_balance_root);
+		Xml_Send(out_result,price_xml);
+		Element strange_balance_root = new Element("information");
+		strange_balance_root.setAttribute("event", "strangebalance");
+		String strangebalance=databaseOP.Query_Balance(payername);
+		strange_balance_root.addContent(strangebalance);
+		price_xml.setRootElement(strange_balance_root);
+		Xml_Send(out_result,price_xml);
+	}
+
+	private boolean Ele_Trade() throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		Element root = xml_doc.getRootElement();
+		Element gl=root.getChild("trade");
+//		List<Element> list = gl.getChildren();
+		Database_Deal Qurry_Db =new Database_Deal();
+		String hash=gl.getChildText("cipher");
+		String num=gl.getChildText("payercardnumber");
+		String payer_cardnum=num;
+		String receiver_cardnum=gl.getChildText("receivercardnumber");
+		System.out.println(hash);
+		Rsa user_rsa=Qurry_Db.Query_Rsa(num);
+		num=user_rsa.Rersa(hash);
+//		System.out.println("明文："+num);
+		String time=gl.getChildText("tradetime");
+		String price=gl.getChildText("totalprice");
+		double temp=Double.valueOf(price);
+		temp=temp*100;
+		int temp_int=(int)temp;
+		String tprice=String.format("%08d", temp_int);
+		if(time.equals(num.substring(0, 10))&&tprice.equals(num.substring(20, 28)))
+		{
+			System.out.println("es");
+			if(Qurry_Db.Transfer_Out_Person(payer_cardnum, price)&&Qurry_Db.Transfer_In_Person(receiver_cardnum, price))
+			{
+				if(Qurry_Db.Elenote_Exist(hash))
+				{
+					return false;
+				}
+				else
+				{
+					System.out.println("ts");
+					return true;
+				}
+			}
+			else
+			{
+				System.out.println("tf");
+				return false;
+			}
+		}
+		else
+		{
+			System.out.println("time="+time+"   "+num.substring(0,10));
+			System.out.println("price="+tprice+"   "+num.substring(20, 28));
+			System.out.println("ef");
+			return false;
+		}
+	}
 
 	private void Notepay_Success(OutputStream out_result) throws IOException, SQLException, ClassNotFoundException {
 		// TODO Auto-generated method stub
 		Database_Deal databaseOP =new Database_Deal();
 		Element root = xml_doc.getRootElement();
 		Element gl=root.getChild("transfer");
-		List<Element> list = gl.getChildren();
+//		List<Element> list = gl.getChildren();
 		String hash=gl.getChildText("cipher");
 		String payer_cardnum=gl.getChildText("payercardnumber");
 		String amount=gl.getChildText("totalprice");
 		String recer_cardnum=gl.getChildText("receivercardnumber");
-		databaseOP.Insert_Elenote(hash, payer_cardnum, recer_cardnum, amount);
-		Element price_root = new Element("information");
-		price_root.setAttribute("event", "sentence");
-		price_root.addContent("电子支票兑现成功");
-		price_xml.setRootElement(price_root);
+		String transfertime=gl.getChildText("transfertime");
+		String payername=gl.getChildText("payername");
+		String recername=gl.getChildText("receivername");
+		String payerdevice=gl.getChildText("payerdevice");
+		String recerdevice=gl.getChildText("receiverdevice");
+		databaseOP.Insert_Elenote(hash, payer_cardnum, recer_cardnum, amount,transfertime,payername,recername,payerdevice,recerdevice);
+		Element local_balance_root = new Element("information");
+		local_balance_root.setAttribute("event", "localbalance");
+		String localbalance=databaseOP.Query_Balance(recername);
+		local_balance_root.addContent(localbalance);
+		price_xml.setRootElement(local_balance_root);
 		Xml_Send(out_result,price_xml);
 	}
 /*
@@ -611,9 +717,11 @@ public class Xml_Parse {
 		String userName = gl.getChildText("userName");
 		String cardNum = gl.getChildText("cardNum");
 		String phoneNum = gl.getChildText("phoneNum");
+		String cardPassword = gl.getChildText("cardPassword");
 		String identificationCardNum = gl.getChildText("identificationCardNum");
 		System.out.println(userName+cardNum+ phoneNum+ identificationCardNum);
-		return datebaseOP.linkBankCard(userName, cardNum, phoneNum, identificationCardNum);
+		newrsa=new Rsa("create");
+		return datebaseOP.linkBankCard(userName, cardNum, phoneNum, identificationCardNum,cardPassword,newrsa);
 	}
 	/*
 	public void linkBankCardSuccess(OutputStream out_result) throws IOException
@@ -634,6 +742,7 @@ public class Xml_Parse {
 		Xml_Send(out_result,price_xml);
 	}*/
 	
+	private Rsa newrsa;
 	private Document xml_doc;
 	private Document price_xml;
 	private PersonInfo person;

@@ -1,10 +1,12 @@
-package elenoteinfo;
+package cn.edu.seu.elenoteinfo;
 
 import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import cn.edu.seu.interfaces.IElenoteInfoDAO;
 
 /**
  * A data access object (DAO) providing persistence and search support for
@@ -13,7 +15,7 @@ import javax.persistence.Query;
  * must be manually added to each of these methods for data to be persisted to
  * the JPA datastore.
  * 
- * @see elenoteinfo.ElenoteInfo
+ * @see cn.edu.seu.elenoteinfo.ElenoteInfo
  * @author MyEclipse Persistence Tools
  */
 

@@ -1,6 +1,8 @@
-package personinterestinfo;
+package cn.edu.seu.interfaces;
 
 import java.util.List;
+
+import personinterestinfo.PersonInterestInfo;
 
 /**
  * Interface for PersonInterestInfoDAO.

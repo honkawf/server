@@ -1,4 +1,4 @@
-package org.epay.citicup.bankserver;
+package cn.edu.seu.bankserver;
 
 
 import java.io.IOException;
@@ -13,7 +13,6 @@ import javax.xml.transform.TransformerException;
 import org.jdom2.JDOMException;
 
 public class Server {
-
 	public static void main(String[] args) throws ClassNotFoundException, SQLException, XMLStreamException, TransformerException {
 		// TODO Auto-generated method stub
 			try{
