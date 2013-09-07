@@ -1,4 +1,4 @@
-package bankaccountinfo;
+package cn.edu.seu.bankaccountinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

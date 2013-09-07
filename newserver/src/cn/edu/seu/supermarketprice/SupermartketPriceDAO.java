@@ -1,11 +1,11 @@
-package supermarketprice;
+package cn.edu.seu.supermarketprice;
 
-import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import cn.edu.seu.banktrade.EntityManagerHelper;
 import cn.edu.seu.interfaces.ISupermartketPriceDAO;
 
 /**
@@ -15,7 +15,7 @@ import cn.edu.seu.interfaces.ISupermartketPriceDAO;
  * must be manually added to each of these methods for data to be persisted to
  * the JPA datastore.
  * 
- * @see supermarketprice.SupermartketPrice
+ * @see cn.edu.seu.supermarketprice.SupermartketPrice
  * @author MyEclipse Persistence Tools
  */
 

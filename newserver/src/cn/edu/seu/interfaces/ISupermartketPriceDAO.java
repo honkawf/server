@@ -2,7 +2,8 @@ package cn.edu.seu.interfaces;
 
 import java.util.List;
 
-import supermarketprice.SupermartketPrice;
+import cn.edu.seu.supermarketprice.SupermartketPrice;
+
 
 /**
  * Interface for SupermartketPriceDAO.

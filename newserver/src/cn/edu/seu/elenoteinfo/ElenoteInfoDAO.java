@@ -1,11 +1,11 @@
 package cn.edu.seu.elenoteinfo;
 
-import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import cn.edu.seu.banktrade.EntityManagerHelper;
 import cn.edu.seu.interfaces.IElenoteInfoDAO;
 
 /**

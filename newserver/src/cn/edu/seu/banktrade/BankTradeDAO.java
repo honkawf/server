@@ -1,35 +1,40 @@
-package xmlsave;
+package cn.edu.seu.banktrade;
 
-import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import cn.edu.seu.interfaces.IXmlSaveDAO;
+import cn.edu.seu.banktrade.EntityManagerHelper;
+import cn.edu.seu.interfaces.IBankTradeDAO;
 
 /**
  * A data access object (DAO) providing persistence and search support for
- * XmlSave entities. Transaction control of the save(), update() and delete()
+ * BankTrade entities. Transaction control of the save(), update() and delete()
  * operations must be handled externally by senders of these methods or must be
  * manually added to each of these methods for data to be persisted to the JPA
  * datastore.
  * 
- * @see xmlsave.XmlSave
+ * @see temp.BankTrade
  * @author MyEclipse Persistence Tools
  */
 
-public class XmlSaveDAO implements IXmlSaveDAO {
+public class BankTradeDAO implements IBankTradeDAO {
 	// property constants
-	public static final String NUM = "num";
-	public static final String XMLDOC = "xmldoc";
+	public static final String SALERNAME = "salername";
+	public static final String SALERMAC = "salermac";
+	public static final String BUYERNAME = "buyername";
+	public static final String BUYERMAC = "buyermac";
+	public static final String BUYERIMEI = "buyerimei";
+	public static final String AMOUNT = "amount";
+	public static final String TRADETIME = "tradetime";
 
 	private EntityManager getEntityManager() {
 		return EntityManagerHelper.getEntityManager();
 	}
 
 	/**
-	 * Perform an initial save of a previously unsaved XmlSave entity. All
+	 * Perform an initial save of a previously unsaved BankTrade entity. All
 	 * subsequent persist actions of this entity should use the #update()
 	 * method. This operation must be performed within the a database
 	 * transaction context for the entity's data to be permanently saved to the
@@ -39,17 +44,17 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * XmlSaveDAO.save(entity);
+	 * BankTradeDAO.save(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            XmlSave entity to persist
+	 *            BankTrade entity to persist
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void save(XmlSave entity) {
-		EntityManagerHelper.log("saving XmlSave instance", Level.INFO, null);
+	public void save(BankTrade entity) {
+		EntityManagerHelper.log("saving BankTrade instance", Level.INFO, null);
 		try {
 			getEntityManager().getTransaction().begin();
 			getEntityManager().persist(entity);
@@ -62,7 +67,7 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 	}
 
 	/**
-	 * Delete a persistent XmlSave entity. This operation must be performed
+	 * Delete a persistent BankTrade entity. This operation must be performed
 	 * within the a database transaction context for the entity's data to be
 	 * permanently deleted from the persistence store, i.e., database. This
 	 * method uses the {@link javax.persistence.EntityManager#remove(Object)
@@ -70,21 +75,22 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * XmlSaveDAO.delete(entity);
+	 * BankTradeDAO.delete(entity);
 	 * EntityManagerHelper.commit();
 	 * entity = null;
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            XmlSave entity to delete
+	 *            BankTrade entity to delete
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void delete(XmlSave entity) {
-		EntityManagerHelper.log("deleting XmlSave instance", Level.INFO, null);
+	public void delete(BankTrade entity) {
+		EntityManagerHelper
+				.log("deleting BankTrade instance", Level.INFO, null);
 		try {
-			entity = getEntityManager().getReference(XmlSave.class,
-					entity.getNotes());
+			entity = getEntityManager().getReference(BankTrade.class,
+					entity.getTradenum());
 			getEntityManager().getTransaction().begin();
 			getEntityManager().remove(entity);
 			getEntityManager().getTransaction().commit();
@@ -96,8 +102,8 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 	}
 
 	/**
-	 * Persist a previously saved XmlSave entity and return it or a copy of it
-	 * to the sender. A copy of the XmlSave entity parameter is returned when
+	 * Persist a previously saved BankTrade entity and return it or a copy of it
+	 * to the sender. A copy of the BankTrade entity parameter is returned when
 	 * the JPA persistence mechanism has not previously been tracking the
 	 * updated entity. This operation must be performed within the a database
 	 * transaction context for the entity's data to be permanently saved to the
@@ -107,22 +113,23 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * entity = XmlSaveDAO.update(entity);
+	 * entity = BankTradeDAO.update(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            XmlSave entity to update
-	 * @return XmlSave the persisted XmlSave entity instance, may not be the
+	 *            BankTrade entity to update
+	 * @return BankTrade the persisted BankTrade entity instance, may not be the
 	 *         same
 	 * @throws RuntimeException
 	 *             if the operation fails
 	 */
-	public XmlSave update(XmlSave entity) {
-		EntityManagerHelper.log("updating XmlSave instance", Level.INFO, null);
+	public BankTrade update(BankTrade entity) {
+		EntityManagerHelper
+				.log("updating BankTrade instance", Level.INFO, null);
 		try {
 			getEntityManager().getTransaction().begin();
-			XmlSave result = getEntityManager().merge(entity);
+			BankTrade result = getEntityManager().merge(entity);
 			getEntityManager().getTransaction().commit();
 			EntityManagerHelper.log("update successful", Level.INFO, null);
 			return result;
@@ -132,11 +139,11 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 		}
 	}
 
-	public XmlSave findById(String id) {
-		EntityManagerHelper.log("finding XmlSave instance with id: " + id,
+	public BankTrade findById(String id) {
+		EntityManagerHelper.log("finding BankTrade instance with id: " + id,
 				Level.INFO, null);
 		try {
-			XmlSave instance = getEntityManager().find(XmlSave.class, id);
+			BankTrade instance = getEntityManager().find(BankTrade.class, id);
 			return instance;
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("find failed", Level.SEVERE, re);
@@ -145,20 +152,21 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 	}
 
 	/**
-	 * Find all XmlSave entities with a specific property value.
+	 * Find all BankTrade entities with a specific property value.
 	 * 
 	 * @param propertyName
-	 *            the name of the XmlSave property to query
+	 *            the name of the BankTrade property to query
 	 * @param value
 	 *            the property value to match
-	 * @return List<XmlSave> found by query
+	 * @return List<BankTrade> found by query
 	 */
 	@SuppressWarnings("unchecked")
-	public List<XmlSave> findByProperty(String propertyName, final Object value) {
-		EntityManagerHelper.log("finding XmlSave instance with property: "
+	public List<BankTrade> findByProperty(String propertyName,
+			final Object value) {
+		EntityManagerHelper.log("finding BankTrade instance with property: "
 				+ propertyName + ", value: " + value, Level.INFO, null);
 		try {
-			final String queryString = "select model from XmlSave model where model."
+			final String queryString = "select model from BankTrade model where model."
 					+ propertyName + "= :propertyValue";
 			Query query = getEntityManager().createQuery(queryString);
 			query.setParameter("propertyValue", value);
@@ -170,25 +178,45 @@ public class XmlSaveDAO implements IXmlSaveDAO {
 		}
 	}
 
-	public List<XmlSave> findByNum(Object num) {
-		return findByProperty(NUM, num);
+	public List<BankTrade> findBySalername(Object salername) {
+		return findByProperty(SALERNAME, salername);
 	}
 
-	public List<XmlSave> findByXmldoc(Object xmldoc) {
-		return findByProperty(XMLDOC, xmldoc);
+	public List<BankTrade> findBySalermac(Object salermac) {
+		return findByProperty(SALERMAC, salermac);
+	}
+
+	public List<BankTrade> findByBuyername(Object buyername) {
+		return findByProperty(BUYERNAME, buyername);
+	}
+
+	public List<BankTrade> findByBuyermac(Object buyermac) {
+		return findByProperty(BUYERMAC, buyermac);
+	}
+
+	public List<BankTrade> findByBuyerimei(Object buyerimei) {
+		return findByProperty(BUYERIMEI, buyerimei);
+	}
+
+	public List<BankTrade> findByAmount(Object amount) {
+		return findByProperty(AMOUNT, amount);
+	}
+
+	public List<BankTrade> findByTradetime(Object tradetime) {
+		return findByProperty(TRADETIME, tradetime);
 	}
 
 	/**
-	 * Find all XmlSave entities.
+	 * Find all BankTrade entities.
 	 * 
-	 * @return List<XmlSave> all XmlSave entities
+	 * @return List<BankTrade> all BankTrade entities
 	 */
 	@SuppressWarnings("unchecked")
-	public List<XmlSave> findAll() {
-		EntityManagerHelper.log("finding all XmlSave instances", Level.INFO,
+	public List<BankTrade> findAll() {
+		EntityManagerHelper.log("finding all BankTrade instances", Level.INFO,
 				null);
 		try {
-			final String queryString = "select model from XmlSave model";
+			final String queryString = "select model from BankTrade model";
 			Query query = getEntityManager().createQuery(queryString);
 			return query.getResultList();
 		} catch (RuntimeException re) {

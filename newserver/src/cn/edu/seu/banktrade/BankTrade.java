@@ -1,4 +1,4 @@
-package banktrade;
+package cn.edu.seu.banktrade;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

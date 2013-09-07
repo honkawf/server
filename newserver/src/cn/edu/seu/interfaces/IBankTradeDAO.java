@@ -2,7 +2,8 @@ package cn.edu.seu.interfaces;
 
 import java.util.List;
 
-import banktrade.BankTrade;
+import cn.edu.seu.banktrade.BankTrade;
+
 
 
 /**

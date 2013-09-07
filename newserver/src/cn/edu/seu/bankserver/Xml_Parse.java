@@ -20,11 +20,12 @@ import org.jdom2.input.DOMBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
-import businessinfo.BusinessInfo;
+import cn.edu.seu.businessinfo.BusinessInfo;
+import cn.edu.seu.persondepositinfo.PersonDepositInfo;
+import cn.edu.seu.personinfo.PersonInfo;
+import cn.edu.seu.personinterestinfo.PersonInterestInfo;
 
-import persondepositinfo.PersonDepositInfo;
-import personinfo.PersonInfo;
-import personinterestinfo.PersonInterestInfo;
+
 
 public class Xml_Parse {
 	public Xml_Parse(byte [] xml_file) throws JDOMException, IOException, XMLStreamException, TransformerException {
@@ -172,7 +173,7 @@ public class Xml_Parse {
 	private void lindBankCardSuccess(OutputStream out_result) throws IOException {
 		// TODO Auto-generated method stub
 		Element price_root = new Element("information");
-		Element e=new Element("privstekey");
+		Element e=new Element("privatekey");
 		e.setText(newrsa.getE());
 		Element n=new Element("publickeyn");
 		n.setText(newrsa.getN());
@@ -510,7 +511,7 @@ public class Xml_Parse {
 		List<Element> list = gl.getChildren();
 		Database_Deal Qurry_Db =new Database_Deal();
 		String hash=gl.getChildText("cipher");
-		String num=gl.getChildText("cardnumber");
+		String num=gl.getChildText("payercardnumber");
 		String buyer_cardnum=num;
 		String store_cardnum=gl.getChildText("storenum");
 		System.out.println(hash);
@@ -715,13 +716,14 @@ public class Xml_Parse {
 		Database_Deal datebaseOP =new Database_Deal();
 		
 		String userName = gl.getChildText("userName");
+		String customerName = gl.getChildText("customerName");
 		String cardNum = gl.getChildText("cardNum");
 		String phoneNum = gl.getChildText("phoneNum");
 		String cardPassword = gl.getChildText("cardPassword");
 		String identificationCardNum = gl.getChildText("identificationCardNum");
 		System.out.println(userName+cardNum+ phoneNum+ identificationCardNum);
 		newrsa=new Rsa("create");
-		return datebaseOP.linkBankCard(userName, cardNum, phoneNum, identificationCardNum,cardPassword,newrsa);
+		return datebaseOP.linkBankCard(userName,customerName, cardNum, phoneNum, identificationCardNum,cardPassword,newrsa);
 	}
 	/*
 	public void linkBankCardSuccess(OutputStream out_result) throws IOException

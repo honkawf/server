@@ -1,11 +1,11 @@
-package personinterestinfo;
+package cn.edu.seu.personinterestinfo;
 
-import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import cn.edu.seu.banktrade.EntityManagerHelper;
 import cn.edu.seu.interfaces.IPersonInterestInfoDAO;
 
 /**
@@ -15,7 +15,7 @@ import cn.edu.seu.interfaces.IPersonInterestInfoDAO;
  * must be manually added to each of these methods for data to be persisted to
  * the JPA datastore.
  * 
- * @see personinterestinfo.PersonInterestInfo
+ * @see cn.edu.seu.personinterestinfo.PersonInterestInfo
  * @author MyEclipse Persistence Tools
  */
 

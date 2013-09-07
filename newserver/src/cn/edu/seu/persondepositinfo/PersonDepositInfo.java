@@ -1,4 +1,4 @@
-package persondepositinfo;
+package cn.edu.seu.persondepositinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

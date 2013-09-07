@@ -4,6 +4,12 @@ import java.math.BigInteger;
 import java.sql.*;
 import java.util.List;
 
+import cn.edu.seu.bankaccountinfo.BankAccountInfo;
+import cn.edu.seu.bankaccountinfo.BankAccountInfoDAO;
+import cn.edu.seu.banktrade.BankTrade;
+import cn.edu.seu.banktrade.BankTradeDAO;
+import cn.edu.seu.businessinfo.BusinessInfo;
+import cn.edu.seu.businessinfo.BusinessInfoDAO;
 import cn.edu.seu.elenoteinfo.ElenoteInfo;
 import cn.edu.seu.elenoteinfo.ElenoteInfoDAO;
 import cn.edu.seu.interfaces.IBankAccountInfoDAO;
@@ -14,23 +20,17 @@ import cn.edu.seu.interfaces.IPersonDepositInfoDAO;
 import cn.edu.seu.interfaces.IPersonInfoDAO;
 import cn.edu.seu.interfaces.IPersonInterestInfoDAO;
 import cn.edu.seu.interfaces.IXmlSaveDAO;
+import cn.edu.seu.persondepositinfo.PersonDepositInfo;
+import cn.edu.seu.persondepositinfo.PersonDepositInfoDAO;
+import cn.edu.seu.personinfo.PersonInfo;
+import cn.edu.seu.personinfo.PersonInfoDAO;
+import cn.edu.seu.personinterestinfo.PersonInterestInfo;
+import cn.edu.seu.personinterestinfo.PersonInterestInfoDAO;
+import cn.edu.seu.xmlsave.XmlSave;
+import cn.edu.seu.xmlsave.XmlSaveDAO;
 
 
-import persondepositinfo.PersonDepositInfo;
-import persondepositinfo.PersonDepositInfoDAO;
-import personinfo.PersonInfo;
-import personinfo.PersonInfoDAO;
-import personinterestinfo.PersonInterestInfo;
-import personinterestinfo.PersonInterestInfoDAO;
-import xmlsave.XmlSave;
-import xmlsave.XmlSaveDAO;
 
-import bankaccountinfo.BankAccountInfo;
-import bankaccountinfo.BankAccountInfoDAO;
-import banktrade.BankTrade;
-import banktrade.BankTradeDAO;
-import businessinfo.BusinessInfo;
-import businessinfo.BusinessInfoDAO;
 
 
 
@@ -313,7 +313,7 @@ public class Database_Deal {
 			return true;
 	}
 	
-	public boolean linkBankCard(String userName, String cardNum, String phoneNum, String idCardNum, String cardPassword, Rsa newrsa) throws ClassNotFoundException, SQLException{
+	public boolean linkBankCard(String userName,String customerName, String cardNum, String phoneNum, String idCardNum, String cardPassword, Rsa newrsa) throws ClassNotFoundException, SQLException{
 /*		Connection tempcon = Connect_bank_db();
 		Statement stmt = tempcon.createStatement();
 		stmt.executeUpdate("update person_info set cardNum = '" + cardNum +"', phoneNum = '" + phoneNum + "', identificationCardNum = '" + idCardNum + "'"
@@ -336,12 +336,16 @@ public class Database_Deal {
 		IBankAccountInfoDAO bank_account_info_dao=new BankAccountInfoDAO();
 		BankAccountInfo bank_account_info=bank_account_info_dao.findById(cardNum);
 		if((person_info==null)||(bank_account_info==null))
+		{
+			System.out.println("1");
 			return false;
+		}
 		else
 		{
-			if((bank_account_info.getIdentificationcardnumber().equals(idCardNum))&&(bank_account_info.getName().equals(userName))&&(bank_account_info.getPassword().equals(cardPassword)))
+			if((bank_account_info.getIdentificationcardnumber().equals(idCardNum))&&(bank_account_info.getName().equals(customerName))&&(bank_account_info.getPassword().equals(cardPassword)))
 			{
 			person_info.setUsername(userName);
+			person_info.setCustomername(customerName);
 			person_info.setCardnum(cardNum);
 			person_info.setPhonenum(phoneNum);
 			person_info.setIdentificationcardnum(idCardNum);
@@ -351,12 +355,25 @@ public class Database_Deal {
 			person_info_dao.save(person_info);
 			PersonInfo exam_person_info=person_info_dao.findById(userName);
 			if(exam_person_info==null)
+			{
+				
+				System.out.println("2");
+				System.out.println(bank_account_info.getIdentificationcardnumber()+idCardNum);
+				System.out.println(bank_account_info.getName()+customerName);
+				System.out.println(bank_account_info.getPassword()+cardPassword);
 				return false;
+			}
 			else
 				return true;
 			}
 			else
+			{
+				System.out.println("3");
+				System.out.println(bank_account_info.getIdentificationcardnumber()+idCardNum);
+				System.out.println(bank_account_info.getName()+customerName);
+				System.out.println(bank_account_info.getPassword()+cardPassword);
 				return false;
+			}
 		}
 	}
 	

@@ -1,11 +1,11 @@
-package bankaccountinfo;
+package cn.edu.seu.bankaccountinfo;
 
-import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import cn.edu.seu.banktrade.EntityManagerHelper;
 import cn.edu.seu.interfaces.IBankAccountInfoDAO;
 
 /**
@@ -15,7 +15,7 @@ import cn.edu.seu.interfaces.IBankAccountInfoDAO;
  * must be manually added to each of these methods for data to be persisted to
  * the JPA datastore.
  * 
- * @see bankaccountinfo.BankAccountInfo
+ * @see cn.edu.seu.bankaccountinfo.BankAccountInfo
  * @author MyEclipse Persistence Tools
  */
 

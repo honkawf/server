@@ -2,7 +2,8 @@ package cn.edu.seu.interfaces;
 
 import java.util.List;
 
-import businessinfo.BusinessInfo;
+import cn.edu.seu.businessinfo.BusinessInfo;
+
 
 /**
  * Interface for BusinessInfoDAO.

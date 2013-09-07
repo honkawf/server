@@ -1,4 +1,4 @@
-package personinterestinfo;
+package cn.edu.seu.personinterestinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

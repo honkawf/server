@@ -1,4 +1,4 @@
-package banktrade;
+package cn.edu.seu.banktrade;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

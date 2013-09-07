@@ -2,7 +2,8 @@ package cn.edu.seu.interfaces;
 
 import java.util.List;
 
-import persondepositinfo.PersonDepositInfo;
+import cn.edu.seu.persondepositinfo.PersonDepositInfo;
+
 
 /**
  * Interface for PersonDepositInfoDAO.

@@ -1,4 +1,4 @@
-package supermarketprice;
+package cn.edu.seu.supermarketprice;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

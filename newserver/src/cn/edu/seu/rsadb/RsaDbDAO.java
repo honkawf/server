@@ -1,12 +1,12 @@
 package cn.edu.seu.rsadb;
 
-import banktrade.BankTrade;
-import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import cn.edu.seu.banktrade.BankTrade;
+import cn.edu.seu.banktrade.EntityManagerHelper;
 import cn.edu.seu.interfaces.IRsaDbDAO;
 
 /**

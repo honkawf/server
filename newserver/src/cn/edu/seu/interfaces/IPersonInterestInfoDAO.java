@@ -2,7 +2,8 @@ package cn.edu.seu.interfaces;
 
 import java.util.List;
 
-import personinterestinfo.PersonInterestInfo;
+import cn.edu.seu.personinterestinfo.PersonInterestInfo;
+
 
 /**
  * Interface for PersonInterestInfoDAO.

@@ -1,4 +1,4 @@
-package xmlsave;
+package cn.edu.seu.xmlsave;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

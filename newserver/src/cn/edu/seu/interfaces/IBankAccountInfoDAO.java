@@ -2,7 +2,8 @@ package cn.edu.seu.interfaces;
 
 import java.util.List;
 
-import bankaccountinfo.BankAccountInfo;
+import cn.edu.seu.bankaccountinfo.BankAccountInfo;
+
 
 /**
  * Interface for BankAccountInfoDAO.

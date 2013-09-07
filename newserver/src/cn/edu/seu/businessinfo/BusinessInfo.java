@@ -1,4 +1,4 @@
-package businessinfo;
+package cn.edu.seu.businessinfo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -9,16 +9,16 @@
 		<provider>
 			org.eclipse.persistence.jpa.PersistenceProvider
 		</provider>
-		<class>banktrade.BankTrade</class>
-		<class>businessinfo.BusinessInfo</class>
+		<class>cn.edu.seu.banktrade.BankTrade</class>
+		<class>cn.edu.seu.businessinfo.BusinessInfo</class>
 		<class>cn.edu.seu.elenoteinfo.ElenoteInfo</class>
-		<class>persondepositinfo.PersonDepositInfo</class>
-		<class>personinfo.PersonInfo</class>
-		<class>personinterestinfo.PersonInterestInfo</class>
-		<class>supermarketprice.SupermartketPrice</class>
-		<class>xmlsave.XmlSave</class>
+		<class>cn.edu.seu.persondepositinfo.PersonDepositInfo</class>
+		<class>cn.edu.seu.personinfo.PersonInfo</class>
+		<class>cn.edu.seu.personinterestinfo.PersonInterestInfo</class>
+		<class>cn.edu.seu.supermarketprice.SupermartketPrice</class>
+		<class>cn.edu.seu.xmlsave.XmlSave</class>
 		<class>cn.edu.seu.rsadb.RsaDb</class>
-		<class>bankaccountinfo.BankAccountInfo</class>
+		<class>cn.edu.seu.bankaccountinfo.BankAccountInfo</class>
 		<properties>
 			<property name="eclipselink.jdbc.driver"
 				value="oracle.jdbc.OracleDriver" />

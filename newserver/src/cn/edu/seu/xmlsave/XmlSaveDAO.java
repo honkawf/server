@@ -1,38 +1,35 @@
-package businessinfo;
+package cn.edu.seu.xmlsave;
 
-import banktrade.EntityManagerHelper;
 import java.util.List;
 import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import cn.edu.seu.interfaces.IBusinessInfoDAO;
+import cn.edu.seu.banktrade.EntityManagerHelper;
+import cn.edu.seu.interfaces.IXmlSaveDAO;
 
 /**
  * A data access object (DAO) providing persistence and search support for
- * BusinessInfo entities. Transaction control of the save(), update() and
- * delete() operations must be handled externally by senders of these methods or
- * must be manually added to each of these methods for data to be persisted to
- * the JPA datastore.
+ * XmlSave entities. Transaction control of the save(), update() and delete()
+ * operations must be handled externally by senders of these methods or must be
+ * manually added to each of these methods for data to be persisted to the JPA
+ * datastore.
  * 
- * @see businessinfo.BusinessInfo
+ * @see cn.edu.seu.xmlsave.XmlSave
  * @author MyEclipse Persistence Tools
  */
 
-public class BusinessInfoDAO implements IBusinessInfoDAO {
+public class XmlSaveDAO implements IXmlSaveDAO {
 	// property constants
-	public static final String STORENAME = "storename";
-	public static final String CARDNUM = "cardnum";
-	public static final String BLUETOOTHPWD = "bluetoothpwd";
-	public static final String BALANCE = "balance";
-	public static final String RANDCODE = "randcode";
+	public static final String NUM = "num";
+	public static final String XMLDOC = "xmldoc";
 
 	private EntityManager getEntityManager() {
 		return EntityManagerHelper.getEntityManager();
 	}
 
 	/**
-	 * Perform an initial save of a previously unsaved BusinessInfo entity. All
+	 * Perform an initial save of a previously unsaved XmlSave entity. All
 	 * subsequent persist actions of this entity should use the #update()
 	 * method. This operation must be performed within the a database
 	 * transaction context for the entity's data to be permanently saved to the
@@ -42,18 +39,17 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * BusinessInfoDAO.save(entity);
+	 * XmlSaveDAO.save(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            BusinessInfo entity to persist
+	 *            XmlSave entity to persist
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void save(BusinessInfo entity) {
-		EntityManagerHelper.log("saving BusinessInfo instance", Level.INFO,
-				null);
+	public void save(XmlSave entity) {
+		EntityManagerHelper.log("saving XmlSave instance", Level.INFO, null);
 		try {
 			getEntityManager().getTransaction().begin();
 			getEntityManager().persist(entity);
@@ -66,7 +62,7 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 	}
 
 	/**
-	 * Delete a persistent BusinessInfo entity. This operation must be performed
+	 * Delete a persistent XmlSave entity. This operation must be performed
 	 * within the a database transaction context for the entity's data to be
 	 * permanently deleted from the persistence store, i.e., database. This
 	 * method uses the {@link javax.persistence.EntityManager#remove(Object)
@@ -74,22 +70,21 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * BusinessInfoDAO.delete(entity);
+	 * XmlSaveDAO.delete(entity);
 	 * EntityManagerHelper.commit();
 	 * entity = null;
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            BusinessInfo entity to delete
+	 *            XmlSave entity to delete
 	 * @throws RuntimeException
 	 *             when the operation fails
 	 */
-	public void delete(BusinessInfo entity) {
-		EntityManagerHelper.log("deleting BusinessInfo instance", Level.INFO,
-				null);
+	public void delete(XmlSave entity) {
+		EntityManagerHelper.log("deleting XmlSave instance", Level.INFO, null);
 		try {
-			entity = getEntityManager().getReference(BusinessInfo.class,
-					entity.getUsername());
+			entity = getEntityManager().getReference(XmlSave.class,
+					entity.getNotes());
 			getEntityManager().getTransaction().begin();
 			getEntityManager().remove(entity);
 			getEntityManager().getTransaction().commit();
@@ -101,9 +96,9 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 	}
 
 	/**
-	 * Persist a previously saved BusinessInfo entity and return it or a copy of
-	 * it to the sender. A copy of the BusinessInfo entity parameter is returned
-	 * when the JPA persistence mechanism has not previously been tracking the
+	 * Persist a previously saved XmlSave entity and return it or a copy of it
+	 * to the sender. A copy of the XmlSave entity parameter is returned when
+	 * the JPA persistence mechanism has not previously been tracking the
 	 * updated entity. This operation must be performed within the a database
 	 * transaction context for the entity's data to be permanently saved to the
 	 * persistence store, i.e., database. This method uses the
@@ -112,23 +107,22 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 	 * 
 	 * <pre>
 	 * EntityManagerHelper.beginTransaction();
-	 * entity = BusinessInfoDAO.update(entity);
+	 * entity = XmlSaveDAO.update(entity);
 	 * EntityManagerHelper.commit();
 	 * </pre>
 	 * 
 	 * @param entity
-	 *            BusinessInfo entity to update
-	 * @return BusinessInfo the persisted BusinessInfo entity instance, may not
-	 *         be the same
+	 *            XmlSave entity to update
+	 * @return XmlSave the persisted XmlSave entity instance, may not be the
+	 *         same
 	 * @throws RuntimeException
 	 *             if the operation fails
 	 */
-	public BusinessInfo update(BusinessInfo entity) {
-		EntityManagerHelper.log("updating BusinessInfo instance", Level.INFO,
-				null);
+	public XmlSave update(XmlSave entity) {
+		EntityManagerHelper.log("updating XmlSave instance", Level.INFO, null);
 		try {
 			getEntityManager().getTransaction().begin();
-			BusinessInfo result = getEntityManager().merge(entity);
+			XmlSave result = getEntityManager().merge(entity);
 			getEntityManager().getTransaction().commit();
 			EntityManagerHelper.log("update successful", Level.INFO, null);
 			return result;
@@ -138,12 +132,11 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 		}
 	}
 
-	public BusinessInfo findById(String id) {
-		EntityManagerHelper.log("finding BusinessInfo instance with id: " + id,
+	public XmlSave findById(String id) {
+		EntityManagerHelper.log("finding XmlSave instance with id: " + id,
 				Level.INFO, null);
 		try {
-			BusinessInfo instance = getEntityManager().find(BusinessInfo.class,
-					id);
+			XmlSave instance = getEntityManager().find(XmlSave.class, id);
 			return instance;
 		} catch (RuntimeException re) {
 			EntityManagerHelper.log("find failed", Level.SEVERE, re);
@@ -152,21 +145,20 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 	}
 
 	/**
-	 * Find all BusinessInfo entities with a specific property value.
+	 * Find all XmlSave entities with a specific property value.
 	 * 
 	 * @param propertyName
-	 *            the name of the BusinessInfo property to query
+	 *            the name of the XmlSave property to query
 	 * @param value
 	 *            the property value to match
-	 * @return List<BusinessInfo> found by query
+	 * @return List<XmlSave> found by query
 	 */
 	@SuppressWarnings("unchecked")
-	public List<BusinessInfo> findByProperty(String propertyName,
-			final Object value) {
-		EntityManagerHelper.log("finding BusinessInfo instance with property: "
+	public List<XmlSave> findByProperty(String propertyName, final Object value) {
+		EntityManagerHelper.log("finding XmlSave instance with property: "
 				+ propertyName + ", value: " + value, Level.INFO, null);
 		try {
-			final String queryString = "select model from BusinessInfo model where model."
+			final String queryString = "select model from XmlSave model where model."
 					+ propertyName + "= :propertyValue";
 			Query query = getEntityManager().createQuery(queryString);
 			query.setParameter("propertyValue", value);
@@ -178,37 +170,25 @@ public class BusinessInfoDAO implements IBusinessInfoDAO {
 		}
 	}
 
-	public List<BusinessInfo> findByStorename(Object storename) {
-		return findByProperty(STORENAME, storename);
+	public List<XmlSave> findByNum(Object num) {
+		return findByProperty(NUM, num);
 	}
 
-	public List<BusinessInfo> findByCardnum(Object cardnum) {
-		return findByProperty(CARDNUM, cardnum);
-	}
-
-	public List<BusinessInfo> findByBluetoothpwd(Object bluetoothpwd) {
-		return findByProperty(BLUETOOTHPWD, bluetoothpwd);
-	}
-
-	public List<BusinessInfo> findByBalance(Object balance) {
-		return findByProperty(BALANCE, balance);
-	}
-
-	public List<BusinessInfo> findByRandcode(Object randcode) {
-		return findByProperty(RANDCODE, randcode);
+	public List<XmlSave> findByXmldoc(Object xmldoc) {
+		return findByProperty(XMLDOC, xmldoc);
 	}
 
 	/**
-	 * Find all BusinessInfo entities.
+	 * Find all XmlSave entities.
 	 * 
-	 * @return List<BusinessInfo> all BusinessInfo entities
+	 * @return List<XmlSave> all XmlSave entities
 	 */
 	@SuppressWarnings("unchecked")
-	public List<BusinessInfo> findAll() {
-		EntityManagerHelper.log("finding all BusinessInfo instances",
-				Level.INFO, null);
+	public List<XmlSave> findAll() {
+		EntityManagerHelper.log("finding all XmlSave instances", Level.INFO,
+				null);
 		try {
-			final String queryString = "select model from BusinessInfo model";
+			final String queryString = "select model from XmlSave model";
 			Query query = getEntityManager().createQuery(queryString);
 			return query.getResultList();
 		} catch (RuntimeException re) {
